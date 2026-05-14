@@ -5,6 +5,7 @@ Complete guide for containerizing Dev Studio with Docker.
 ## Overview
 
 Docker allows you to:
+
 - **Consistent environments** - Same setup across dev, staging, production
 - **Easy deployment** - Single command to deploy
 - **Isolation** - App runs in isolated container
@@ -107,7 +108,7 @@ CMD ["npm", "run", "dev"]
 ### docker-compose.yml (Production)
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -131,7 +132,7 @@ services:
 ### docker-compose.dev.yml (Development)
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   app:

@@ -27,9 +27,28 @@ const MAILS_TABS = [
 
 // Seed Data
 const INITIAL_TEMPLATES: MailTemplate[] = [
-  { id: "1", channel: "cover-letter", subject: "Frontend Engineer - Tech Corp", content: "Dear Hiring Manager,\n\nI am writing to express my strong interest in the Frontend Engineer position...", updatedAt: "2 days ago" },
-  { id: "2", channel: "gmail", subject: "Project Update: Q3 Launch", content: "Hi team,\n\nHere's a quick update on our progress for the Q3 launch...", updatedAt: "5 hours ago" },
-  { id: "3", channel: "whatsapp", content: "Hey! Just wanted to follow up on our meeting from yesterday. Let me know when you have time to chat.", updatedAt: "1 day ago" },
+  {
+    id: "1",
+    channel: "cover-letter",
+    subject: "Frontend Engineer - Tech Corp",
+    content:
+      "Dear Hiring Manager,\n\nI am writing to express my strong interest in the Frontend Engineer position...",
+    updatedAt: "2 days ago",
+  },
+  {
+    id: "2",
+    channel: "gmail",
+    subject: "Project Update: Q3 Launch",
+    content: "Hi team,\n\nHere's a quick update on our progress for the Q3 launch...",
+    updatedAt: "5 hours ago",
+  },
+  {
+    id: "3",
+    channel: "whatsapp",
+    content:
+      "Hey! Just wanted to follow up on our meeting from yesterday. Let me know when you have time to chat.",
+    updatedAt: "1 day ago",
+  },
 ];
 
 function MailsPage() {
@@ -59,8 +78,8 @@ function MailsPage() {
 
   // Switch active template when channel changes
   useEffect(() => {
-    const channelTemplates = templates.filter(t => t.channel === tab);
-    if (channelTemplates.length > 0 && !channelTemplates.some(t => t.id === activeTemplateId)) {
+    const channelTemplates = templates.filter((t) => t.channel === tab);
+    if (channelTemplates.length > 0 && !channelTemplates.some((t) => t.id === activeTemplateId)) {
       setActiveTemplateId(channelTemplates[0].id);
     } else if (channelTemplates.length === 0) {
       setActiveTemplateId(null);
@@ -80,45 +99,47 @@ function MailsPage() {
   };
 
   const handleUpdateTemplate = (updates: Partial<MailTemplate>) => {
-    setTemplates(prev => prev.map(t => 
-      t.id === activeTemplateId ? { ...t, ...updates, updatedAt: "Just now" } : t
-    ));
+    setTemplates((prev) =>
+      prev.map((t) =>
+        t.id === activeTemplateId ? { ...t, ...updates, updatedAt: "Just now" } : t,
+      ),
+    );
   };
 
   const handleDeleteTemplate = (id: string) => {
-    setTemplates(prev => prev.filter(t => t.id !== id));
+    setTemplates((prev) => prev.filter((t) => t.id !== id));
     if (activeTemplateId === id) {
       setActiveTemplateId(null);
     }
   };
 
-  const activeTemplate = templates.find(t => t.id === activeTemplateId) || null;
+  const activeTemplate = templates.find((t) => t.id === activeTemplateId) || null;
 
   return (
     <PageContainer>
       <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
         <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader 
+          <PageHeader
             title="Mails & Messaging"
             description="Manage your professional communications, cover letters, and outreach."
             className="mb-6"
           />
           <div className="w-full">
-            <TabNav 
+            <TabNav
               tabs={MAILS_TABS.map((t) => ({
                 ...t,
-                onClick: () => navigate({ to: ".", search: { tab: t.id } })
-              }))} 
-              activeTab={tab} 
+                onClick: () => navigate({ to: ".", search: { tab: t.id } }),
+              }))}
+              activeTab={tab}
             />
           </div>
         </div>
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <SplitLayout 
+        <SplitLayout
           sidebar={
-            <MailsSidebar 
+            <MailsSidebar
               channel={tab}
               templates={templates}
               activeTemplateId={activeTemplateId}
@@ -126,12 +147,12 @@ function MailsPage() {
               onNewTemplate={handleNewTemplate}
               onDeleteTemplate={handleDeleteTemplate}
             />
-          } 
-          sidebarWidth="lg:w-[260px]" 
+          }
+          sidebarWidth="lg:w-[260px]"
           className="border-t border-border"
         >
           <div className="overflow-y-auto scrollbar-thin h-full w-full">
-            <TemplateEditor 
+            <TemplateEditor
               channel={tab}
               activeTemplate={activeTemplate}
               onUpdateTemplate={handleUpdateTemplate}

@@ -1,11 +1,25 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, newId } from "@/lib/store";
-import { Component as ComponentIcon, Plus, Trash2, Search, Code2, Monitor, Eye } from "lucide-react";
+import {
+  Component as ComponentIcon,
+  Plus,
+  Trash2,
+  Search,
+  Code2,
+  Monitor,
+  Eye,
+} from "lucide-react";
 import { toast } from "sonner";
 import type { ComponentAsset } from "@/types/tools";
 import { Field, Input, TextArea } from "./shared";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SplitLayout } from "../layout";
 
 export function Components({ selectedId }: { selectedId?: string }) {
@@ -21,9 +35,10 @@ export function Components({ selectedId }: { selectedId?: string }) {
   );
   const selected = selectedId ? components.find((c) => c.id === selectedId) : filtered[0];
 
-  const select = (cid: string) => navigate({ 
-    search: { ...search, id: cid } 
-  } as any);
+  const select = (cid: string) =>
+    navigate({
+      search: { ...search, id: cid },
+    } as any);
 
   const create = () => {
     const c: ComponentAsset = {
@@ -109,8 +124,8 @@ export function Components({ selectedId }: { selectedId?: string }) {
                 <button
                   onClick={() => {
                     deleteComponent(selected.id);
-                    navigate({ 
-                      search: { ...search, id: undefined } 
+                    navigate({
+                      search: { ...search, id: undefined },
                     } as any);
                   }}
                   className="p-2 rounded-md border border-border hover:bg-destructive/10"
@@ -123,7 +138,9 @@ export function Components({ selectedId }: { selectedId?: string }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex flex-wrap items-center gap-4 text-xs">
                 <Field label="Category">
-                  <span className="px-2 py-0.5 rounded bg-muted font-mono uppercase text-[9px]">{selected.category}</span>
+                  <span className="px-2 py-0.5 rounded bg-muted font-mono uppercase text-[9px]">
+                    {selected.category}
+                  </span>
                 </Field>
                 <Field label="Dependencies">
                   <span className="text-muted-foreground">{selected.dependencies.join(", ")}</span>
@@ -133,7 +150,9 @@ export function Components({ selectedId }: { selectedId?: string }) {
                 <button
                   onClick={() => setPreviewMode("preview")}
                   className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-colors ${
-                    previewMode === "preview" ? "bg-background shadow-xs text-foreground" : "text-muted-foreground"
+                    previewMode === "preview"
+                      ? "bg-background shadow-xs text-foreground"
+                      : "text-muted-foreground"
                   }`}
                 >
                   <Eye className="size-3.5" /> Preview
@@ -141,7 +160,9 @@ export function Components({ selectedId }: { selectedId?: string }) {
                 <button
                   onClick={() => setPreviewMode("code")}
                   className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-colors ${
-                    previewMode === "code" ? "bg-background shadow-xs text-foreground" : "text-muted-foreground"
+                    previewMode === "code"
+                      ? "bg-background shadow-xs text-foreground"
+                      : "text-muted-foreground"
                   }`}
                 >
                   <Code2 className="size-3.5" /> Code
@@ -176,7 +197,8 @@ export function Components({ selectedId }: { selectedId?: string }) {
                   </div>
                   <h3 className="text-sm font-medium mb-1">Canvas Preview</h3>
                   <p className="text-xs text-muted-foreground max-w-xs">
-                    Sandbox environment for rendering <strong>{selected.name}</strong> will appear here.
+                    Sandbox environment for rendering <strong>{selected.name}</strong> will appear
+                    here.
                   </p>
                   <button
                     onClick={() => toast.info("Building sandbox container…")}
@@ -193,7 +215,10 @@ export function Components({ selectedId }: { selectedId?: string }) {
         <section className="grid place-items-center p-8 text-center flex-1">
           <div>
             <ComponentIcon className="size-10 text-muted-foreground mx-auto mb-3" />
-            <button onClick={create} className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md">
+            <button
+              onClick={create}
+              className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md"
+            >
               Create your first component
             </button>
           </div>

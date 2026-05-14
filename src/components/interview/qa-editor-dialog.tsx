@@ -3,7 +3,13 @@ import { X, Plus, Trash2, GripVertical } from "lucide-react";
 import { toast } from "sonner";
 import { useForge, newId } from "@/lib/store";
 import { Input, TextArea } from "@/components/tools/shared";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { InterviewQuestion } from "@/types/skills";
 import type { FocusArea, Difficulty, AnswerDepth } from "@/types/common";
 
@@ -30,7 +36,14 @@ interface Props {
   defaultCategory?: string;
 }
 
-export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "general", defaultTags = [], defaultCategory = "" }: Props) {
+export function QAEditorDialog({
+  open,
+  onOpenChange,
+  editing,
+  defaultArea = "general",
+  defaultTags = [],
+  defaultCategory = "",
+}: Props) {
   const { upsertInterviewQuestion } = useForge();
 
   const blank = (): {
@@ -69,7 +82,7 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
         setForm(blank());
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, editing]);
 
   const setField = <K extends keyof typeof form>(key: K, val: (typeof form)[K]) =>
@@ -91,8 +104,14 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
     setForm((f) => ({ ...f, depths: f.depths.filter((d) => d.id !== id) }));
 
   const save = () => {
-    if (!form.question.trim()) { toast.error("Question is required"); return; }
-    if (!form.answer.trim()) { toast.error("Main answer is required"); return; }
+    if (!form.question.trim()) {
+      toast.error("Question is required");
+      return;
+    }
+    if (!form.answer.trim()) {
+      toast.error("Main answer is required");
+      return;
+    }
     const q: InterviewQuestion = {
       id: editing?.id ?? newId("iq"),
       question: form.question.trim(),
@@ -100,7 +119,10 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
       answerDepths: form.depths.filter((d) => d.body.trim()),
       area: form.area,
       difficulty: form.difficulty,
-      tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
+      tags: form.tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
       category: form.category.trim() || undefined,
       favorite: editing?.favorite,
       createdAt: editing?.createdAt ?? Date.now(),
@@ -114,12 +136,20 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={() => onOpenChange(false)}
+      />
       <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-background border border-border rounded-xl shadow-2xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border sticky top-0 bg-background z-10">
-          <h2 className="text-sm font-semibold">{editing ? "Edit question" : "Add new question"}</h2>
-          <button onClick={() => onOpenChange(false)} className="text-muted-foreground hover:text-foreground">
+          <h2 className="text-sm font-semibold">
+            {editing ? "Edit question" : "Add new question"}
+          </h2>
+          <button
+            onClick={() => onOpenChange(false)}
+            className="text-muted-foreground hover:text-foreground"
+          >
             <X className="size-4" />
           </button>
         </div>
@@ -127,7 +157,9 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
         <div className="px-6 py-5 space-y-5 flex-1">
           {/* Question */}
           <div>
-            <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">Question</label>
+            <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">
+              Question
+            </label>
             <TextArea
               value={form.question}
               onChange={(e) => setField("question", e.target.value)}
@@ -140,40 +172,65 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
           {/* Meta row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">Area</label>
+              <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">
+                Area
+              </label>
               <Select value={form.area} onValueChange={(val) => setField("area", val as FocusArea)}>
                 <SelectTrigger className="w-full h-9">
                   <SelectValue placeholder="Select area" />
                 </SelectTrigger>
                 <SelectContent>
-                  {AREAS.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+                  {AREAS.map((a) => (
+                    <SelectItem key={a} value={a}>
+                      {a}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">Difficulty</label>
-              <Select value={form.difficulty} onValueChange={(val) => setField("difficulty", val as Difficulty)}>
+              <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">
+                Difficulty
+              </label>
+              <Select
+                value={form.difficulty}
+                onValueChange={(val) => setField("difficulty", val as Difficulty)}
+              >
                 <SelectTrigger className="w-full h-9">
                   <SelectValue placeholder="Select difficulty" />
                 </SelectTrigger>
                 <SelectContent>
-                  {DIFFS.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                  {DIFFS.map((d) => (
+                    <SelectItem key={d} value={d}>
+                      {d}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">Category</label>
-              <Input value={form.category} onChange={(e) => setField("category", e.target.value)}
+              <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">
+                Category
+              </label>
+              <Input
+                value={form.category}
+                onChange={(e) => setField("category", e.target.value)}
                 placeholder="e.g. SQL Fundamentals"
-                className="w-full" />
+                className="w-full"
+              />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">Tags (comma separated)</label>
-            <Input value={form.tags} onChange={(e) => setField("tags", e.target.value)}
+            <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground block mb-1.5">
+              Tags (comma separated)
+            </label>
+            <Input
+              value={form.tags}
+              onChange={(e) => setField("tags", e.target.value)}
               placeholder="e.g. javascript, closures, scope"
-              className="w-full" />
+              className="w-full"
+            />
           </div>
 
           {/* Main answer */}
@@ -196,8 +253,10 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
               <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
                 Answer perspectives ({form.depths.length})
               </label>
-              <button onClick={addDepth}
-                className="inline-flex items-center gap-1 text-xs border border-dashed border-border text-muted-foreground hover:text-foreground hover:border-primary/40 px-2 py-1 rounded transition-colors">
+              <button
+                onClick={addDepth}
+                className="inline-flex items-center gap-1 text-xs border border-dashed border-border text-muted-foreground hover:text-foreground hover:border-primary/40 px-2 py-1 rounded transition-colors"
+              >
                 <Plus className="size-3" /> Add perspective
               </button>
             </div>
@@ -210,7 +269,10 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
 
             <div className="space-y-3">
               {form.depths.map((depth, idx) => (
-                <div key={depth.id} className="rounded-lg border border-border bg-card p-3 space-y-2">
+                <div
+                  key={depth.id}
+                  className="rounded-lg border border-border bg-card p-3 space-y-2"
+                >
                   <div className="flex items-center gap-2">
                     <GripVertical className="size-3.5 text-muted-foreground/40 shrink-0" />
                     <span className="text-[10px] font-mono text-muted-foreground">#{idx + 1}</span>
@@ -228,7 +290,11 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {DEPTH_LABEL_PRESETS.map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                        {DEPTH_LABEL_PRESETS.map((p) => (
+                          <SelectItem key={p} value={p}>
+                            {p}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     {(!DEPTH_LABEL_PRESETS.includes(depth.label) || depth.label === "Custom…") && (
@@ -239,7 +305,10 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
                         className="bg-card border border-border rounded px-2 py-0.5 text-xs focus:outline-none focus:ring-1 focus:ring-ring flex-1 h-7"
                       />
                     )}
-                    <button onClick={() => removeDepth(depth.id)} className="text-muted-foreground hover:text-destructive ml-auto">
+                    <button
+                      onClick={() => removeDepth(depth.id)}
+                      className="text-muted-foreground hover:text-destructive ml-auto"
+                    >
                       <Trash2 className="size-3.5" />
                     </button>
                   </div>
@@ -258,12 +327,16 @@ export function QAEditorDialog({ open, onOpenChange, editing, defaultArea = "gen
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-border sticky bottom-0 bg-background">
-          <button onClick={() => onOpenChange(false)}
-            className="px-4 py-1.5 text-sm border border-border rounded-md hover:bg-muted transition-colors">
+          <button
+            onClick={() => onOpenChange(false)}
+            className="px-4 py-1.5 text-sm border border-border rounded-md hover:bg-muted transition-colors"
+          >
             Cancel
           </button>
-          <button onClick={save}
-            className="px-4 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity font-medium">
+          <button
+            onClick={save}
+            className="px-4 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity font-medium"
+          >
             {editing ? "Save changes" : "Add question"}
           </button>
         </div>

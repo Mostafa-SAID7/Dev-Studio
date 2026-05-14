@@ -10,12 +10,12 @@ interface SplitLayoutProps {
   defaultOpen?: boolean;
 }
 
-export function SplitLayout({ 
-  sidebar, 
-  children, 
+export function SplitLayout({
+  sidebar,
+  children,
   sidebarWidth = "w-64",
   className = "",
-  defaultOpen = true
+  defaultOpen = true,
 }: SplitLayoutProps) {
   const [isOpen, setIsOpen] = React.useState(defaultOpen);
 
@@ -28,7 +28,8 @@ export function SplitLayout({
 
   // Ensure there's a base width if only responsive widths are provided
   const sidebarWidthClass = React.useMemo(() => {
-    const hasBaseWidth = /(^|\s)w-([^\d]|\[)/.test(sidebarWidth) || /(^|\s)w-\d+/.test(sidebarWidth);
+    const hasBaseWidth =
+      /(^|\s)w-([^\d]|\[)/.test(sidebarWidth) || /(^|\s)w-\d+/.test(sidebarWidth);
     if (!hasBaseWidth) {
       return `w-72 ${sidebarWidth}`;
     }
@@ -39,7 +40,7 @@ export function SplitLayout({
   const widthValue = React.useMemo(() => {
     const bracketMatch = sidebarWidthClass.match(/\[(.*?)\]/);
     let baseWidth = "288px";
-    
+
     if (bracketMatch) {
       baseWidth = bracketMatch[1];
     } else if (sidebarWidthClass.includes("w-80")) {
@@ -58,23 +59,23 @@ export function SplitLayout({
   }, [sidebarWidthClass]);
 
   return (
-    <div 
+    <div
       className={cn("flex h-full min-h-0 bg-background relative overflow-hidden", className)}
       style={{ "--sidebar-width": widthValue } as React.CSSProperties}
     >
       {/* Sidebar - Pushes content, no overlay */}
-      <aside 
+      <aside
         className={cn(
           "flex flex-col shrink-0 border-r border-border bg-muted/10 transition-[width] duration-300 ease-in-out overflow-hidden relative",
-          !isOpen && "w-0 border-r-0"
+          !isOpen && "w-0 border-r-0",
         )}
         style={{ width: isOpen ? "var(--sidebar-width)" : "0" }}
       >
-        <div 
+        <div
           className={cn(
             "flex-1 flex flex-col transition-opacity duration-200",
-            isOpen ? "opacity-100 delay-150" : "opacity-0 pointer-events-none"
-          )} 
+            isOpen ? "opacity-100 delay-150" : "opacity-0 pointer-events-none",
+          )}
           style={{ width: "var(--sidebar-width)" }}
         >
           {sidebar}
@@ -86,7 +87,7 @@ export function SplitLayout({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "grid place-items-center absolute top-20 z-30 size-6 rounded-full border border-border bg-background shadow-sm hover:bg-accent hover:scale-105 active:scale-95 transition-all duration-300 group",
-          isOpen ? "left-[calc(var(--sidebar-width)-12px)]" : "left-3"
+          isOpen ? "left-[calc(var(--sidebar-width)-12px)]" : "left-3",
         )}
         aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
       >
@@ -97,9 +98,7 @@ export function SplitLayout({
         )}
       </button>
 
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        {children}
-      </main>
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">{children}</main>
     </div>
   );
 }

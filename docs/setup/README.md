@@ -7,6 +7,7 @@ Complete guide for setting up Dev Studio for local development.
 Get Dev Studio running in 5 minutes.
 
 ### 1. Clone & Install
+
 ```bash
 git clone https://github.com/firstall31-dot/Dev-Studio.git
 cd Dev-Studio
@@ -14,6 +15,7 @@ npm install
 ```
 
 ### 2. Configure Environment
+
 1. Go to [supabase.com](https://supabase.com) and create a new project.
 2. Get your **Project URL** and **Anon Public Key** from **Settings** → **API**.
 3. Copy the example environment file:
@@ -23,9 +25,11 @@ npm install
 4. Edit `.env.local` with your credentials.
 
 ### 3. Run Development Server
+
 ```bash
 npm run dev
 ```
+
 Open `http://localhost:5000` in your browser.
 
 ---
@@ -36,7 +40,6 @@ Open `http://localhost:5000` in your browser.
 - **npm** 9.0.0+ or **Bun** package manager
 - **Git** 2.30+
 - **Supabase account** (free tier available at https://supabase.com)
-
 
 ## Installation Steps
 
@@ -50,11 +53,13 @@ cd Dev-Studio
 ### 2. Install Dependencies
 
 Using npm:
+
 ```bash
 npm install
 ```
 
 Or using Bun:
+
 ```bash
 bun install
 ```
@@ -62,6 +67,7 @@ bun install
 ### 3. Environment Configuration
 
 Copy the example environment file:
+
 ```bash
 cp .env.example .env.local
 ```
@@ -69,6 +75,7 @@ cp .env.example .env.local
 Edit `.env.local` with your credentials. See [Credentials Setup Guide](./CREDENTIALS_SETUP.md) for detailed instructions on collecting all required credentials:
 
 **Required Credentials:**
+
 - Supabase (database and auth)
 - Slack (notifications)
 - Cloudflare (deployment)

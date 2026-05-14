@@ -30,15 +30,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       subscription = data.subscription;
 
-      supabase.auth.getSession().then(({ data: { session: s } }) => {
-        setSession(s);
-        setIsReady(true);
-        clearTimeout(timeoutId);
-      }).catch(err => {
-        console.error("Auth session error:", err);
-        setIsReady(true);
-        clearTimeout(timeoutId);
-      });
+      supabase.auth
+        .getSession()
+        .then(({ data: { session: s } }) => {
+          setSession(s);
+          setIsReady(true);
+          clearTimeout(timeoutId);
+        })
+        .catch((err) => {
+          console.error("Auth session error:", err);
+          setIsReady(true);
+          clearTimeout(timeoutId);
+        });
     } catch (err) {
       console.error("Auth initialization error:", err);
       setIsReady(true);
@@ -67,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");

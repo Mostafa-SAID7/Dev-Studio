@@ -123,7 +123,14 @@ export function Snippets({ selectedId }: { selectedId?: string }) {
               <Field label="Tags">
                 <Input
                   value={selected.tags.join(", ")}
-                  onChange={(e) => update({ tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })}
+                  onChange={(e) =>
+                    update({
+                      tags: e.target.value
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    })
+                  }
                   className="font-mono"
                 />
               </Field>
@@ -155,7 +162,10 @@ export function Snippets({ selectedId }: { selectedId?: string }) {
         <section className="grid place-items-center p-8 text-center flex-1">
           <div>
             <Scissors className="size-10 text-muted-foreground mx-auto mb-3" />
-            <button onClick={create} className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md">
+            <button
+              onClick={create}
+              className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md"
+            >
               Save your first snippet
             </button>
           </div>

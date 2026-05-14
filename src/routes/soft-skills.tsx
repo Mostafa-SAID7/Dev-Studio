@@ -5,7 +5,10 @@ import { MessageCircle, Users, Lightbulb, Clock, Target, Sparkles } from "lucide
 import { z } from "zod";
 
 const searchSchema = z.object({
-  tab: z.enum(["communication", "leadership", "problem-solving", "teamwork", "time", "growth"]).optional().default("communication"),
+  tab: z
+    .enum(["communication", "leadership", "problem-solving", "teamwork", "time", "growth"])
+    .optional()
+    .default("communication"),
 });
 
 const SOFT_TABS = [
@@ -22,7 +25,10 @@ export const Route = createFileRoute("/soft-skills")({
   head: () => ({
     meta: [
       { title: "Soft Skills Hub — Dev Studio" },
-      { name: "description", content: "Master communication, leadership, and human engineering with our unified hub." },
+      {
+        name: "description",
+        content: "Master communication, leadership, and human engineering with our unified hub.",
+      },
     ],
   }),
   component: SoftSkillsPage,
@@ -36,23 +42,23 @@ function SoftSkillsPage() {
     <PageContainer>
       <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
         <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader 
+          <PageHeader
             title="Communication & Soft Skills"
             description="Master the art of collaboration, leadership, and emotional intelligence."
             className="mb-6"
           />
           <div className="w-full">
-            <TabNav 
-              tabs={SOFT_TABS.map(t => ({
+            <TabNav
+              tabs={SOFT_TABS.map((t) => ({
                 ...t,
-                onClick: () => navigate({ search: { tab: t.id } })
-              }))} 
-              activeTab={tab} 
+                onClick: () => navigate({ search: { tab: t.id } }),
+              }))}
+              activeTab={tab}
             />
           </div>
         </div>
       </div>
-      
+
       <div className="flex-1 overflow-hidden">
         <SoftSkillView activeTab={tab} />
       </div>

@@ -73,7 +73,9 @@ export function AuthForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {mode === "signup" && (
           <div className="space-y-1.5">
-            <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">Display name</label>
+            <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">
+              Display name
+            </label>
             <Input
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
@@ -83,7 +85,9 @@ export function AuthForm() {
           </div>
         )}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">Email</label>
+          <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">
+            Email
+          </label>
           <Input
             type="email"
             required
@@ -94,7 +98,9 @@ export function AuthForm() {
           />
         </div>
         <div className="space-y-1.5">
-          <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">Password</label>
+          <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">
+            Password
+          </label>
           <Input
             type="password"
             required

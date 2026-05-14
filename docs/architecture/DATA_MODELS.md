@@ -10,28 +10,30 @@ Versioned prompt library with variables and usage tracking.
 
 ```typescript
 interface Prompt {
-  id: string                    // Unique identifier
-  title: string                 // Prompt title
-  description: string           // Short description
-  category: string              // Category (e.g., "API Design")
-  tags: string[]                // Search tags
-  body: string                  // Prompt content
-  variables: string[]           // Template variables (e.g., ["language", "framework"])
-  model?: string                // Preferred AI model
-  favorite?: boolean            // Marked as favorite
-  usageCount: number            // Times used
-  versions: {                   // Version history
-    id: string
-    createdAt: number
-    body: string
-    note?: string
-  }[]
-  createdAt: number             // Creation timestamp
-  updatedAt: number             // Last update timestamp
+  id: string; // Unique identifier
+  title: string; // Prompt title
+  description: string; // Short description
+  category: string; // Category (e.g., "API Design")
+  tags: string[]; // Search tags
+  body: string; // Prompt content
+  variables: string[]; // Template variables (e.g., ["language", "framework"])
+  model?: string; // Preferred AI model
+  favorite?: boolean; // Marked as favorite
+  usageCount: number; // Times used
+  versions: {
+    // Version history
+    id: string;
+    createdAt: number;
+    body: string;
+    note?: string;
+  }[];
+  createdAt: number; // Creation timestamp
+  updatedAt: number; // Last update timestamp
 }
 ```
 
 **Example:**
+
 ```json
 {
   "id": "prompt_abc123",
@@ -56,21 +58,22 @@ Custom AI agent with system prompt and tools.
 
 ```typescript
 interface Agent {
-  id: string                    // Unique identifier
-  name: string                  // Agent name
-  role: string                  // Agent role/description
-  systemPrompt: string          // System prompt for AI
-  tools: string[]               // Available tools
-  model: string                 // AI model (e.g., "gpt-4")
-  temperature: number           // Temperature (0-2)
-  status: "active" | "idle" | "draft"  // Agent status
-  tags: string[]                // Search tags
-  createdAt: number             // Creation timestamp
-  updatedAt: number             // Last update timestamp
+  id: string; // Unique identifier
+  name: string; // Agent name
+  role: string; // Agent role/description
+  systemPrompt: string; // System prompt for AI
+  tools: string[]; // Available tools
+  model: string; // AI model (e.g., "gpt-4")
+  temperature: number; // Temperature (0-2)
+  status: "active" | "idle" | "draft"; // Agent status
+  tags: string[]; // Search tags
+  createdAt: number; // Creation timestamp
+  updatedAt: number; // Last update timestamp
 }
 ```
 
 **Example:**
+
 ```json
 {
   "id": "agent_xyz789",
@@ -93,21 +96,22 @@ Reusable code component with dependencies.
 
 ```typescript
 interface ComponentAsset {
-  id: string                    // Unique identifier
-  name: string                  // Component name
-  description: string           // Description
-  category: string              // Category (e.g., "Form")
-  tags: string[]                // Search tags
-  code: string                  // Component code
-  dependencies: string[]        // Required packages
-  favorite?: boolean            // Marked as favorite
-  usageCount: number            // Times used
-  createdAt: number             // Creation timestamp
-  updatedAt: number             // Last update timestamp
+  id: string; // Unique identifier
+  name: string; // Component name
+  description: string; // Description
+  category: string; // Category (e.g., "Form")
+  tags: string[]; // Search tags
+  code: string; // Component code
+  dependencies: string[]; // Required packages
+  favorite?: boolean; // Marked as favorite
+  usageCount: number; // Times used
+  createdAt: number; // Creation timestamp
+  updatedAt: number; // Last update timestamp
 }
 ```
 
 **Example:**
+
 ```json
 {
   "id": "comp_def456",
@@ -130,19 +134,20 @@ Project template with tech stack.
 
 ```typescript
 interface Template {
-  id: string                    // Unique identifier
-  name: string                  // Template name
-  description: string           // Description
-  stack: string[]               // Tech stack (e.g., ["React", "Node", "PostgreSQL"])
-  tags: string[]                // Search tags
-  structure: string             // Project structure description
-  notes: string                 // Additional notes
-  createdAt: number             // Creation timestamp
-  updatedAt: number             // Last update timestamp
+  id: string; // Unique identifier
+  name: string; // Template name
+  description: string; // Description
+  stack: string[]; // Tech stack (e.g., ["React", "Node", "PostgreSQL"])
+  tags: string[]; // Search tags
+  structure: string; // Project structure description
+  notes: string; // Additional notes
+  createdAt: number; // Creation timestamp
+  updatedAt: number; // Last update timestamp
 }
 ```
 
 **Example:**
+
 ```json
 {
   "id": "tmpl_ghi789",
@@ -163,18 +168,19 @@ Code snippet by language.
 
 ```typescript
 interface Snippet {
-  id: string                    // Unique identifier
-  title: string                 // Snippet title
-  language: string              // Programming language
-  description: string           // Description
-  code: string                  // Code content
-  tags: string[]                // Search tags
-  createdAt: number             // Creation timestamp
-  updatedAt: number             // Last update timestamp
+  id: string; // Unique identifier
+  title: string; // Snippet title
+  language: string; // Programming language
+  description: string; // Description
+  code: string; // Code content
+  tags: string[]; // Search tags
+  createdAt: number; // Creation timestamp
+  updatedAt: number; // Last update timestamp
 }
 ```
 
 **Example:**
+
 ```json
 {
   "id": "snip_jkl012",
@@ -194,27 +200,29 @@ Q&A for interview preparation.
 
 ```typescript
 interface InterviewQuestion {
-  id: string                    // Unique identifier
-  question: string              // Question text
-  answer: string                // Answer text
-  answerDepths?: {              // Multiple answer depths
-    id: string
-    label: string               // Depth level (e.g., "Junior", "Senior")
-    body: string                // Answer for this level
-  }[]
-  area: FocusArea               // Focus area
-  difficulty: Difficulty        // Difficulty level
-  tags: string[]                // Search tags
-  category?: string             // Category
-  favorite?: boolean            // Marked as favorite
-  createdAt: number             // Creation timestamp
+  id: string; // Unique identifier
+  question: string; // Question text
+  answer: string; // Answer text
+  answerDepths?: {
+    // Multiple answer depths
+    id: string;
+    label: string; // Depth level (e.g., "Junior", "Senior")
+    body: string; // Answer for this level
+  }[];
+  area: FocusArea; // Focus area
+  difficulty: Difficulty; // Difficulty level
+  tags: string[]; // Search tags
+  category?: string; // Category
+  favorite?: boolean; // Marked as favorite
+  createdAt: number; // Creation timestamp
 }
 
-type FocusArea = "frontend" | "backend" | "devops" | "testing" | "database" | "general"
-type Difficulty = "junior" | "mid" | "senior"
+type FocusArea = "frontend" | "backend" | "devops" | "testing" | "database" | "general";
+type Difficulty = "junior" | "mid" | "senior";
 ```
 
 **Example:**
+
 ```json
 {
   "id": "iq_mno345",
@@ -258,6 +266,7 @@ CREATE TABLE profiles (
 ```
 
 **Fields:**
+
 - `id` - User ID from Supabase Auth
 - `display_name` - User's display name
 - `avatar_url` - URL to user's avatar
@@ -271,6 +280,7 @@ CREATE TABLE profiles (
 All asset data is stored in browser localStorage under key `forgedev-store-v3`.
 
 **Structure:**
+
 ```json
 {
   "state": {
@@ -285,6 +295,7 @@ All asset data is stored in browser localStorage under key `forgedev-store-v3`.
 ```
 
 **Limits:**
+
 - ~5-10MB per browser
 - Per-domain storage
 - Persists across sessions
@@ -295,9 +306,9 @@ All asset data is stored in browser localStorage under key `forgedev-store-v3`.
 All types are defined in `src/lib/types.ts`:
 
 ```typescript
-export type AssetKind = "prompt" | "agent" | "component" | "template" | "snippet"
-export type FocusArea = "frontend" | "backend" | "devops" | "testing" | "database" | "general"
-export type Difficulty = "junior" | "mid" | "senior"
+export type AssetKind = "prompt" | "agent" | "component" | "template" | "snippet";
+export type FocusArea = "frontend" | "backend" | "devops" | "testing" | "database" | "general";
+export type Difficulty = "junior" | "mid" | "senior";
 ```
 
 ## Relationships
@@ -322,13 +333,13 @@ All timestamps are Unix milliseconds (not seconds):
 
 ```typescript
 // Current time
-const now = Date.now()  // e.g., 1715000000000
+const now = Date.now(); // e.g., 1715000000000
 
 // Convert to Date
-const date = new Date(timestamp)
+const date = new Date(timestamp);
 
 // Format
-const formatted = new Date(timestamp).toLocaleString()
+const formatted = new Date(timestamp).toLocaleString();
 ```
 
 ## IDs

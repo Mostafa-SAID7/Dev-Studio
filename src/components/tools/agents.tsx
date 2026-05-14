@@ -5,7 +5,13 @@ import { Bot, Plus, Trash2, Play, Search } from "lucide-react";
 import { toast } from "sonner";
 import type { Agent } from "@/types/tools";
 import { Field, StatusDot, Input, TextArea } from "./shared";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SplitLayout } from "../layout";
 
 export function Agents({ selectedId }: { selectedId?: string }) {
@@ -107,16 +113,16 @@ export function Agents({ selectedId }: { selectedId?: string }) {
                   className="w-full text-sm text-muted-foreground bg-transparent focus:outline-none border-none p-0 h-auto mt-1"
                 />
               </div>
-                <button
-                  onClick={() => {
-                    deleteAgent(selected.id);
-                    navigate({ search: { ...search, id: undefined } } as any);
-                  }}
-                  className="p-2 rounded-md border border-border hover:bg-destructive/10 self-end sm:self-auto"
-                >
-                  <Trash2 className="size-4 text-muted-foreground" />
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  deleteAgent(selected.id);
+                  navigate({ search: { ...search, id: undefined } } as any);
+                }}
+                className="p-2 rounded-md border border-border hover:bg-destructive/10 self-end sm:self-auto"
+              >
+                <Trash2 className="size-4 text-muted-foreground" />
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               <Field label="Status">
@@ -155,7 +161,14 @@ export function Agents({ selectedId }: { selectedId?: string }) {
               <Field label="Tools">
                 <Input
                   value={selected.tools.join(", ")}
-                  onChange={(e) => update({ tools: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })}
+                  onChange={(e) =>
+                    update({
+                      tools: e.target.value
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    })
+                  }
                   className="font-mono"
                 />
               </Field>
@@ -175,7 +188,9 @@ export function Agents({ selectedId }: { selectedId?: string }) {
 
             <div className="rounded-lg border border-border bg-card p-4">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Playground</p>
+                <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                  Playground
+                </p>
                 <button
                   onClick={() => toast.info("Connect Lovable AI to run the agent")}
                   className="inline-flex items-center gap-1.5 text-xs bg-primary text-primary-foreground px-3 py-1 rounded-md"
@@ -195,7 +210,10 @@ export function Agents({ selectedId }: { selectedId?: string }) {
         <section className="grid place-items-center p-8 text-center flex-1">
           <div>
             <Bot className="size-10 text-muted-foreground mx-auto mb-3" />
-            <button onClick={create} className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md">
+            <button
+              onClick={create}
+              className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md"
+            >
               Provision your first agent
             </button>
           </div>

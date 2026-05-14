@@ -14,9 +14,7 @@ export function ResourcesSection({ data, subArea }: Props) {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold tracking-tight mb-2">Essential Resources</h2>
-        <p className="text-muted-foreground text-sm">
-          Curated documentation and deep-dive guides.
-        </p>
+        <p className="text-muted-foreground text-sm">Curated documentation and deep-dive guides.</p>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">

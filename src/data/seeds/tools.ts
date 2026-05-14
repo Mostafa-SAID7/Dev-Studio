@@ -7,7 +7,8 @@ export const seedPrompts: Prompt[] = [
   {
     id: id("p", 1),
     title: "Database Schema Architect",
-    description: "Generates production-ready PostgreSQL schemas with RLS, relations, and audit columns.",
+    description:
+      "Generates production-ready PostgreSQL schemas with RLS, relations, and audit columns.",
     category: "Backend",
     tags: ["postgres", "supabase", "schema", "rls"],
     body: `Act as a senior database architect. Design a production-ready PostgreSQL schema for {{project_name}} using {{tech_stack}}.\n\nRequirements:\n1. snake_case tables, UUID primary keys\n2. created_at / updated_at timestamps\n3. RLS policies for every table\n4. Indexes on all foreign keys\n5. Provide migration SQL + ER diagram description`,
@@ -22,7 +23,8 @@ export const seedPrompts: Prompt[] = [
   {
     id: id("p", 2),
     title: "Next.js Auth Wrapper",
-    description: "Standardized system prompt for secure, type-safe NextAuth middleware and providers.",
+    description:
+      "Standardized system prompt for secure, type-safe NextAuth middleware and providers.",
     category: "System Prompts",
     tags: ["nextjs", "auth", "typescript"],
     body: `You are an expert Next.js engineer. Generate a NextAuth v5 setup for {{project_name}} with providers: {{providers}}.\nInclude middleware, callbacks, session typing, and protected route helpers.`,
@@ -94,7 +96,8 @@ export const seedAgents: Agent[] = [
     id: "a_1",
     name: "Code Auditor",
     role: "Reviews PRs for security, performance, and style violations.",
-    systemPrompt: "You are a senior code reviewer. Be ruthless but constructive. Output: blockers, nits, suggestions.",
+    systemPrompt:
+      "You are a senior code reviewer. Be ruthless but constructive. Output: blockers, nits, suggestions.",
     tools: ["filesystem", "git", "lint"],
     model: "claude-3.5-sonnet",
     temperature: 0.2,
@@ -204,7 +207,8 @@ export const seedTemplates: Template[] = [
     description: "Auth, billing stub, dashboard, marketing site.",
     stack: ["next.js", "supabase", "tailwind", "shadcn"],
     tags: ["saas", "boilerplate"],
-    structure: "app/\n  (marketing)/\n    page.tsx\n  (app)/\n    dashboard/\n    settings/\n  api/\n    webhook/stripe/\nlib/\n  supabase/\n  stripe/\nmiddleware.ts",
+    structure:
+      "app/\n  (marketing)/\n    page.tsx\n  (app)/\n    dashboard/\n    settings/\n  api/\n    webhook/stripe/\nlib/\n  supabase/\n  stripe/\nmiddleware.ts",
     notes: "Includes RLS migrations and a dark-first design system.",
     createdAt: now - 86400000 * 60,
     updatedAt: now - 86400000 * 3,

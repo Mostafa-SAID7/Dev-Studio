@@ -1,9 +1,9 @@
 import { AreaId, SkillAreaData, TechAreaId } from "../types/skills";
-import { 
-  Globe, 
-  Server, 
-  Container, 
-  FlaskConical, 
+import {
+  Globe,
+  Server,
+  Container,
+  FlaskConical,
   Database,
   MessageCircle,
   Users,
@@ -11,7 +11,7 @@ import {
   Clock,
   Target,
   Sparkles,
-  Heart
+  Heart,
 } from "lucide-react";
 
 export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
@@ -35,28 +35,72 @@ export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
       { id: "img", label: "Images: WebP/AVIF, srcset, lazy loading" },
     ],
     subAreas: [
-      { 
-        id: "react", 
-        label: "React", 
-        color: "border-primary/40 bg-primary/10 text-primary", 
-        accent: "border-primary/30", 
+      {
+        id: "react",
+        label: "React",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
         tags: ["react"],
         concepts: [
-          { title: "Composition over Inheritance", body: "Build complex UIs by nesting specialized components. Use children prop for layouts." },
-          { title: "Immutability", body: "Never mutate state directly. Use setState/dispatch. Enables fast comparisons and time-travel debugging." },
-          { title: "Hooks Pattern", body: "Logic reuse without classes. Custom hooks for data fetching, auth, and complex state." },
-          { title: "Server Components", body: "Move logic to the server. Zero-bundle size for static parts. Direct DB access." }
+          {
+            title: "Composition over Inheritance",
+            body: "Build complex UIs by nesting specialized components. Use children prop for layouts.",
+          },
+          {
+            title: "Immutability",
+            body: "Never mutate state directly. Use setState/dispatch. Enables fast comparisons and time-travel debugging.",
+          },
+          {
+            title: "Hooks Pattern",
+            body: "Logic reuse without classes. Custom hooks for data fetching, auth, and complex state.",
+          },
+          {
+            title: "Server Components",
+            body: "Move logic to the server. Zero-bundle size for static parts. Direct DB access.",
+          },
         ],
         resources: [
-          { label: "React Docs", url: "https://react.dev", desc: "The new official React documentation." },
-          { label: "Beta Docs — Hooks", url: "https://react.dev/reference/react", desc: "Deep dive into React Hooks API." }
-        ]
+          {
+            label: "React Docs",
+            url: "https://react.dev",
+            desc: "The new official React documentation.",
+          },
+          {
+            label: "Beta Docs — Hooks",
+            url: "https://react.dev/reference/react",
+            desc: "Deep dive into React Hooks API.",
+          },
+        ],
       },
-      { id: "angular", label: "Angular", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["angular"] },
-      { id: "vue", label: "Vue.js", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["vue"] },
-      { id: "svelte", label: "Svelte", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["svelte"] },
-      { id: "nextjs", label: "Next.js", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["nextjs"] },
-    ]
+      {
+        id: "angular",
+        label: "Angular",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["angular"],
+      },
+      {
+        id: "vue",
+        label: "Vue.js",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["vue"],
+      },
+      {
+        id: "svelte",
+        label: "Svelte",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["svelte"],
+      },
+      {
+        id: "nextjs",
+        label: "Next.js",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["nextjs"],
+      },
+    ],
   },
   backend: {
     id: "backend",
@@ -78,34 +122,83 @@ export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
       { id: "timeout", label: "Request timeouts & circuit breakers on external calls" },
     ],
     subAreas: [
-      { id: "node", label: "Node.js", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["nodejs"] },
-      { id: "aspnet", label: "ASP.NET Core", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["aspnet"] },
-      { id: "python", label: "Python/FastAPI", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["python", "fastapi"] },
-      { id: "go", label: "Go", color: "border-primary/40 bg-primary/10 text-primary", accent: "border-primary/30", tags: ["go"] },
-    ]
+      {
+        id: "node",
+        label: "Node.js",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["nodejs"],
+      },
+      {
+        id: "aspnet",
+        label: "ASP.NET Core",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["aspnet"],
+      },
+      {
+        id: "python",
+        label: "Python/FastAPI",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["python", "fastapi"],
+      },
+      {
+        id: "go",
+        label: "Go",
+        color: "border-primary/40 bg-primary/10 text-primary",
+        accent: "border-primary/30",
+        tags: ["go"],
+      },
+    ],
   },
   database: {
     id: "database",
     label: "Database",
     icon: Database,
-    description: "SQL, NoSQL, Redis, indexing, transactions, schema design, and scaling — deeply covered.",
+    description:
+      "SQL, NoSQL, Redis, indexing, transactions, schema design, and scaling — deeply covered.",
     concepts: [
-      { title: "ACID Transactions", body: "Atomicity, Consistency, Isolation, Durability. Postgres is fully ACID." },
-      { title: "B-Tree Indexes", body: "Default index type. Sorted tree allowing O(log n) lookups and range scans." },
-      { title: "Query Planning", body: "Optimizer chooses between index scans, hash joins, etc. Use EXPLAIN ANALYZE." },
-      { title: "Normalization", body: "Reduce redundancy and maintain integrity. Denormalize only for performance." },
+      {
+        title: "ACID Transactions",
+        body: "Atomicity, Consistency, Isolation, Durability. Postgres is fully ACID.",
+      },
+      {
+        title: "B-Tree Indexes",
+        body: "Default index type. Sorted tree allowing O(log n) lookups and range scans.",
+      },
+      {
+        title: "Query Planning",
+        body: "Optimizer chooses between index scans, hash joins, etc. Use EXPLAIN ANALYZE.",
+      },
+      {
+        title: "Normalization",
+        body: "Reduce redundancy and maintain integrity. Denormalize only for performance.",
+      },
     ],
     resources: [
-      { label: "PostgreSQL Docs", url: "https://www.postgresql.org/docs/", desc: "Full PostgreSQL SQL reference." },
-      { label: "MongoDB Docs", url: "https://www.mongodb.com/docs/", desc: "Official MongoDB documentation." },
-      { label: "Use The Index, Luke", url: "https://use-the-index-luke.com", desc: "SQL indexing for developers." },
+      {
+        label: "PostgreSQL Docs",
+        url: "https://www.postgresql.org/docs/",
+        desc: "Full PostgreSQL SQL reference.",
+      },
+      {
+        label: "MongoDB Docs",
+        url: "https://www.mongodb.com/docs/",
+        desc: "Official MongoDB documentation.",
+      },
+      {
+        label: "Use The Index, Luke",
+        url: "https://use-the-index-luke.com",
+        desc: "SQL indexing for developers.",
+      },
     ],
     checklist: [
       { id: "migrate", label: "All schema changes via versioned migrations" },
       { id: "index", label: "Foreign keys and frequently-filtered columns indexed" },
       { id: "pool", label: "Connection pooling configured correctly" },
       { id: "backup", label: "Automated backups + restore tested" },
-    ]
+    ],
   },
   devops: {
     id: "devops",
@@ -113,18 +206,28 @@ export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
     icon: Container,
     description: "CI/CD, containers, infrastructure as code, and observability.",
     concepts: [
-      { title: "Infrastructure as Code", body: "Define resources in code (Terraform, CloudFormation). Versioned and reproducible." },
-      { title: "CI/CD Pipelines", body: "Automated build, test, and deploy. Use Github Actions or GitLab CI." },
+      {
+        title: "Infrastructure as Code",
+        body: "Define resources in code (Terraform, CloudFormation). Versioned and reproducible.",
+      },
+      {
+        title: "CI/CD Pipelines",
+        body: "Automated build, test, and deploy. Use Github Actions or GitLab CI.",
+      },
     ],
     resources: [
       { label: "Docker Docs", url: "https://docs.docker.com", desc: "Containerization reference." },
-      { label: "Terraform Registry", url: "https://registry.terraform.io", desc: "Infrastructure modules." },
+      {
+        label: "Terraform Registry",
+        url: "https://registry.terraform.io",
+        desc: "Infrastructure modules.",
+      },
     ],
     checklist: [
       { id: "pipeline", label: "Automated CI pipeline on every PR" },
       { id: "secrets", label: "Secrets managed in vault/env vars" },
       { id: "monitoring", label: "Real-time monitoring and alerting" },
-    ]
+    ],
   },
   testing: {
     id: "testing",
@@ -132,7 +235,10 @@ export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
     icon: FlaskConical,
     description: "Frontend, Backend, and End-to-End testing strategies.",
     concepts: [
-      { title: "Testing Pyramid", body: "Many unit tests, fewer integration tests, even fewer E2E tests." },
+      {
+        title: "Testing Pyramid",
+        body: "Many unit tests, fewer integration tests, even fewer E2E tests.",
+      },
       { title: "TDD", body: "Test-Driven Development: Red, Green, Refactor." },
     ],
     resources: [
@@ -142,15 +248,16 @@ export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
     checklist: [
       { id: "coverage", label: "Critical paths covered by unit tests" },
       { id: "e2e", label: "E2E smoke tests for main user flows" },
-    ]
-  }
+    ],
+  },
 };
 
 export const SOFT_SKILLS_DATA: SkillAreaData = {
   id: "softskills",
   label: "Soft Skills",
   icon: Heart,
-  description: "The human side of engineering — communication, leadership, and emotional intelligence.",
+  description:
+    "The human side of engineering — communication, leadership, and emotional intelligence.",
   concepts: [],
   resources: [],
   checklist: [
@@ -162,80 +269,129 @@ export const SOFT_SKILLS_DATA: SkillAreaData = {
     { id: "delegate", label: "Delegate the 'what', not the 'how'" },
   ],
   subAreas: [
-    { 
-      id: "communication", 
-      label: "Communication", 
-      color: "border-primary/40 bg-primary/10 text-primary", 
-      accent: "border-primary/30", 
+    {
+      id: "communication",
+      label: "Communication",
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
       tags: ["communication"],
       concepts: [
-        { title: "Active Listening", body: "Repeat back what you heard before responding. Ask clarifying questions. In code review, comment on intent before style." },
-        { title: "Async Writing", body: "Lead with the conclusion (BLUF). Use bullet points for scanability. Record decisions and 'why' — future you will thank you." },
-        { title: "Technical Storytelling", body: "Frame trade-offs as 'option A buys X but costs Y'. Use diagrams for systems. Anchor numbers (latency, cost) before opinions." },
-        { title: "Stakeholder Translation", body: "Translate engineering jargon into business outcomes. 'Refactor' → 'reduces incident frequency'. 'Tech debt' → 'slowing feature velocity 30%'." },
+        {
+          title: "Active Listening",
+          body: "Repeat back what you heard before responding. Ask clarifying questions. In code review, comment on intent before style.",
+        },
+        {
+          title: "Async Writing",
+          body: "Lead with the conclusion (BLUF). Use bullet points for scanability. Record decisions and 'why' — future you will thank you.",
+        },
+        {
+          title: "Technical Storytelling",
+          body: "Frame trade-offs as 'option A buys X but costs Y'. Use diagrams for systems. Anchor numbers (latency, cost) before opinions.",
+        },
+        {
+          title: "Stakeholder Translation",
+          body: "Translate engineering jargon into business outcomes. 'Refactor' → 'reduces incident frequency'. 'Tech debt' → 'slowing feature velocity 30%'.",
+        },
       ],
       resources: [
-        { label: "Nonviolent Communication", url: "https://www.cnvc.org/", desc: "The foundational framework for empathy." },
-        { label: "Crucial Conversations", url: "https://cruciallearning.com/", desc: "Tools for talking when stakes are high." },
-      ]
+        {
+          label: "Nonviolent Communication",
+          url: "https://www.cnvc.org/",
+          desc: "The foundational framework for empathy.",
+        },
+        {
+          label: "Crucial Conversations",
+          url: "https://cruciallearning.com/",
+          desc: "Tools for talking when stakes are high.",
+        },
+      ],
     },
-    { 
-      id: "leadership", 
-      label: "Leadership", 
-      color: "border-primary/40 bg-primary/10 text-primary", 
-      accent: "border-primary/30", 
+    {
+      id: "leadership",
+      label: "Leadership",
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
       tags: ["leadership"],
       concepts: [
-        { title: "Lead Without Authority", body: "Influence by demonstrating, not directing. Write the first RFC. Build the smallest reference implementation. Volunteer for the boring glue." },
-        { title: "Delegation", body: "Delegate outcomes, not steps. Give context, constraints, and a deadline. Trust the person to choose the path." },
+        {
+          title: "Lead Without Authority",
+          body: "Influence by demonstrating, not directing. Write the first RFC. Build the smallest reference implementation. Volunteer for the boring glue.",
+        },
+        {
+          title: "Delegation",
+          body: "Delegate outcomes, not steps. Give context, constraints, and a deadline. Trust the person to choose the path.",
+        },
       ],
       resources: [
-        { label: "Extreme Ownership", url: "https://echelonfront.com/", desc: "Leadership principles from Navy SEALs." },
-        { label: "The Manager's Path", url: "https://www.oreilly.com/", desc: "Guide for tech leaders." },
-      ]
+        {
+          label: "Extreme Ownership",
+          url: "https://echelonfront.com/",
+          desc: "Leadership principles from Navy SEALs.",
+        },
+        {
+          label: "The Manager's Path",
+          url: "https://www.oreilly.com/",
+          desc: "Guide for tech leaders.",
+        },
+      ],
     },
-    { 
-      id: "problem-solving", 
-      label: "Problem Solving", 
-      color: "border-primary/40 bg-primary/10 text-primary", 
-      accent: "border-primary/30", 
+    {
+      id: "problem-solving",
+      label: "Problem Solving",
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
       tags: ["problem-solving"],
       concepts: [
-        { title: "First Principles", body: "Strip the problem to physical/logical truths. Rebuild from there. Avoid 'this is how we always do it' as a solution." },
-        { title: "5 Whys", body: "Ask 'why' five times to drive past symptoms to root cause. Pairs well with blameless post-mortems." },
-      ]
+        {
+          title: "First Principles",
+          body: "Strip the problem to physical/logical truths. Rebuild from there. Avoid 'this is how we always do it' as a solution.",
+        },
+        {
+          title: "5 Whys",
+          body: "Ask 'why' five times to drive past symptoms to root cause. Pairs well with blameless post-mortems.",
+        },
+      ],
     },
-    { 
-      id: "teamwork", 
-      label: "Teamwork", 
-      color: "border-primary/40 bg-primary/10 text-primary", 
-      accent: "border-primary/30", 
+    {
+      id: "teamwork",
+      label: "Teamwork",
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
       tags: ["teamwork"],
       concepts: [
-        { title: "Psychological Safety", body: "Reward 'I don't know' and 'I was wrong'. Punish blame, not mistakes." },
-      ]
+        {
+          title: "Psychological Safety",
+          body: "Reward 'I don't know' and 'I was wrong'. Punish blame, not mistakes.",
+        },
+      ],
     },
-    { 
-      id: "time", 
-      label: "Time Management", 
-      icon: Clock, 
-      color: "border-primary/40 bg-primary/10 text-primary", 
-      accent: "border-primary/30", 
+    {
+      id: "time",
+      label: "Time Management",
+      icon: Clock,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
       tags: ["time-management"],
       concepts: [
-        { title: "Deep Work Blocks", body: "2–4 hour uninterrupted blocks for hard problems. No Slack, no meetings. Defend them ruthlessly." },
-      ]
+        {
+          title: "Deep Work Blocks",
+          body: "2–4 hour uninterrupted blocks for hard problems. No Slack, no meetings. Defend them ruthlessly.",
+        },
+      ],
     },
-    { 
-      id: "growth", 
-      label: "Growth Mindset", 
-      icon: Sparkles, 
-      color: "border-primary/40 bg-primary/10 text-primary", 
-      accent: "border-primary/30", 
+    {
+      id: "growth",
+      label: "Growth Mindset",
+      icon: Sparkles,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
       tags: ["growth"],
       concepts: [
-        { title: "Deliberate Practice", body: "Pick one weak area per quarter. Practice with feedback. Generic 'years of experience' is not skill." },
-      ]
+        {
+          title: "Deliberate Practice",
+          body: "Pick one weak area per quarter. Practice with feedback. Generic 'years of experience' is not skill.",
+        },
+      ],
     },
-  ]
+  ],
 };

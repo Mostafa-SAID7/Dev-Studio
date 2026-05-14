@@ -115,11 +115,13 @@ High-level overview of Dev Studio's system design and data flow.
 Manages user authentication state and session.
 
 **Key Functions:**
+
 - `useAuth()` - Get current user and auth state
 - `signOut()` - Sign out user
 - `AuthProvider` - Wraps app with auth context
 
 **Data:**
+
 ```typescript
 {
   session: Session | null,
@@ -133,6 +135,7 @@ Manages user authentication state and session.
 Zustand store for all asset data.
 
 **Stores:**
+
 - Prompts
 - Agents
 - Components
@@ -141,6 +144,7 @@ Zustand store for all asset data.
 - Interview Questions
 
 **Features:**
+
 - Persisted to localStorage
 - Undo/redo support (via versions)
 - Favorites and usage tracking
@@ -151,6 +155,7 @@ Zustand store for all asset data.
 TanStack Router for page navigation.
 
 **Routes:**
+
 - `/` - Dashboard
 - `/prompts` - Prompts library
 - `/agents` - AI Agents
@@ -166,6 +171,7 @@ TanStack Router for page navigation.
 React components for UI.
 
 **Categories:**
+
 - **UI Components** - shadcn/ui components
 - **Layout** - AppShell, Sidebar, Header
 - **Forms** - Input, Select, Textarea
@@ -177,12 +183,14 @@ React components for UI.
 External service clients.
 
 **Services:**
+
 - Supabase - Database and auth
 - (Future) OpenAI, Anthropic, etc.
 
 ## Technology Stack
 
 ### Frontend
+
 - **React 19** - UI framework
 - **TanStack Router** - Client-side routing
 - **TanStack Query** - Data fetching
@@ -193,15 +201,18 @@ External service clients.
 - **Zod** - Schema validation
 
 ### Backend
+
 - **TanStack Start** - Full-stack framework
 - **Vite** - Build tool
 - **TypeScript** - Type safety
 
 ### Services
+
 - **Supabase** - Auth and database
 - **Cloudflare Workers** - Deployment
 
 ### Development
+
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **Vite** - Dev server and build
@@ -213,17 +224,17 @@ External service clients.
 ```typescript
 interface ForgeState {
   // Data
-  prompts: Prompt[]
-  agents: Agent[]
-  components: ComponentAsset[]
-  templates: Template[]
-  snippets: Snippet[]
-  interviewQuestions: InterviewQuestion[]
+  prompts: Prompt[];
+  agents: Agent[];
+  components: ComponentAsset[];
+  templates: Template[];
+  snippets: Snippet[];
+  interviewQuestions: InterviewQuestion[];
 
   // Actions
-  upsertPrompt(p: Prompt): void
-  deletePrompt(id: string): void
-  toggleFavoritePrompt(id: string): void
+  upsertPrompt(p: Prompt): void;
+  deletePrompt(id: string): void;
+  toggleFavoritePrompt(id: string): void;
   // ... similar for other assets
 }
 ```
@@ -245,7 +256,7 @@ try {
   // Operation
 } catch (error) {
   // Show toast notification
-  toast.error('Operation failed')
+  toast.error("Operation failed");
 }
 ```
 
@@ -255,12 +266,12 @@ try {
 // Error middleware in TanStack Start
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
-    return await next()
+    return await next();
   } catch (error) {
     // Normalize error
     // Return error page
   }
-})
+});
 ```
 
 ## Performance Considerations

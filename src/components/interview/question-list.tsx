@@ -1,5 +1,15 @@
 import { useState, useMemo } from "react";
-import { Search, ChevronRight, Sparkles, Globe, Server, Database, Container, Layout, Cpu } from "lucide-react";
+import {
+  Search,
+  ChevronRight,
+  Sparkles,
+  Globe,
+  Server,
+  Database,
+  Container,
+  Layout,
+  Cpu,
+} from "lucide-react";
 import { SplitLayout } from "../layout";
 import { Input } from "@/components/ui/input";
 
@@ -17,27 +27,30 @@ const QUESTIONS = [
   {
     id: "1",
     question: "What is the Virtual DOM and how does it work in React?",
-    answer: "The Virtual DOM is a lightweight copy of the real DOM. React uses it to improve performance by calculating the minimal number of changes needed to update the UI (diffing) and then applying those changes in a single batch (reconciliation).",
+    answer:
+      "The Virtual DOM is a lightweight copy of the real DOM. React uses it to improve performance by calculating the minimal number of changes needed to update the UI (diffing) and then applying those changes in a single batch (reconciliation).",
     difficulty: "medium",
     domain: "frontend",
-    tags: ["react", "javascript"]
+    tags: ["react", "javascript"],
   },
   {
     id: "2",
     question: "Explain the difference between SQL and NoSQL databases.",
-    answer: "SQL databases are relational, table-based, and have predefined schemas (e.g., PostgreSQL). NoSQL databases are non-relational, document or key-value based, and have dynamic schemas (e.g., MongoDB). SQL is better for structured data and complex queries, while NoSQL is better for scalability and hierarchical data.",
+    answer:
+      "SQL databases are relational, table-based, and have predefined schemas (e.g., PostgreSQL). NoSQL databases are non-relational, document or key-value based, and have dynamic schemas (e.g., MongoDB). SQL is better for structured data and complex queries, while NoSQL is better for scalability and hierarchical data.",
     difficulty: "easy",
     domain: "database",
-    tags: ["sql", "nosql"]
+    tags: ["sql", "nosql"],
   },
   {
     id: "3",
     question: "How do you handle race conditions in a distributed system?",
-    answer: "Race conditions can be handled using distributed locking (e.g., Redis Redlock), optimistic concurrency control (versioning), or by using idempotent operations and message queues with atomic delivery guarantees.",
+    answer:
+      "Race conditions can be handled using distributed locking (e.g., Redis Redlock), optimistic concurrency control (versioning), or by using idempotent operations and message queues with atomic delivery guarantees.",
     difficulty: "hard",
     domain: "architecture",
-    tags: ["distributed-systems", "concurrency"]
-  }
+    tags: ["distributed-systems", "concurrency"],
+  },
 ];
 
 export function QuestionList() {
@@ -46,9 +59,10 @@ export function QuestionList() {
   const [domain, setDomain] = useState<string>("frontend");
 
   const filtered = useMemo(() => {
-    return QUESTIONS.filter(q => {
-      const matchesSearch = q.question.toLowerCase().includes(search.toLowerCase()) || 
-                          q.answer.toLowerCase().includes(search.toLowerCase());
+    return QUESTIONS.filter((q) => {
+      const matchesSearch =
+        q.question.toLowerCase().includes(search.toLowerCase()) ||
+        q.answer.toLowerCase().includes(search.toLowerCase());
       const matchesDifficulty = !difficulty || q.difficulty === difficulty;
       const matchesDomain = q.domain === domain;
       return matchesSearch && matchesDifficulty && matchesDomain;
@@ -131,15 +145,19 @@ export function QuestionList() {
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className={`px-1.5 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider ${
-                        q.difficulty === 'hard' ? 'bg-primary/10 text-primary' :
-                        q.difficulty === 'medium' ? 'bg-primary/10 text-primary' :
-                        'bg-primary/10 text-primary'
-                      }`}>
+                      <span
+                        className={`px-1.5 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider ${
+                          q.difficulty === "hard"
+                            ? "bg-primary/10 text-primary"
+                            : q.difficulty === "medium"
+                              ? "bg-primary/10 text-primary"
+                              : "bg-primary/10 text-primary"
+                        }`}
+                      >
                         {q.difficulty}
                       </span>
                       <span className="text-[10px] text-muted-foreground font-mono">
-                        {DOMAINS.find(d => d.id === q.domain)?.label}
+                        {DOMAINS.find((d) => d.id === q.domain)?.label}
                       </span>
                     </div>
                     <h3 className="text-base font-semibold group-hover:text-primary transition-colors">
@@ -150,7 +168,7 @@ export function QuestionList() {
                     <ChevronRight className="size-4 text-muted-foreground" />
                   </button>
                 </div>
-                
+
                 <div className="bg-muted/30 rounded-lg p-4 text-sm text-muted-foreground leading-relaxed border border-border/50">
                   <div className="flex items-center gap-2 mb-2 text-[10px] font-mono uppercase tracking-wider text-primary/70">
                     <Sparkles className="size-3" /> Sample Answer
@@ -163,7 +181,9 @@ export function QuestionList() {
           {filtered.length === 0 && (
             <div className="text-center py-20 bg-muted/10 rounded-2xl border border-dashed border-border">
               <Search className="size-10 text-muted-foreground mx-auto mb-4 opacity-20" />
-              <p className="text-sm text-muted-foreground">No questions found matching your criteria.</p>
+              <p className="text-sm text-muted-foreground">
+                No questions found matching your criteria.
+              </p>
             </div>
           )}
         </div>

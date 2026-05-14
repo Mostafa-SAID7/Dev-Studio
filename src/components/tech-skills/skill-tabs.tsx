@@ -3,11 +3,29 @@ import { Globe, Server, Container, FlaskConical, Database, Heart } from "lucide-
 import { TabNav } from "../layout";
 
 const TABS = [
-  { to: "/tech-skills", search: { tab: "frontend" }, label: "Frontend", icon: Globe, id: "frontend" },
+  {
+    to: "/tech-skills",
+    search: { tab: "frontend" },
+    label: "Frontend",
+    icon: Globe,
+    id: "frontend",
+  },
   { to: "/tech-skills", search: { tab: "backend" }, label: "Backend", icon: Server, id: "backend" },
   { to: "/tech-skills", search: { tab: "devops" }, label: "DevOps", icon: Container, id: "devops" },
-  { to: "/tech-skills", search: { tab: "testing" }, label: "Testing", icon: FlaskConical, id: "testing" },
-  { to: "/tech-skills", search: { tab: "database" }, label: "Database", icon: Database, id: "database" },
+  {
+    to: "/tech-skills",
+    search: { tab: "testing" },
+    label: "Testing",
+    icon: FlaskConical,
+    id: "testing",
+  },
+  {
+    to: "/tech-skills",
+    search: { tab: "database" },
+    label: "Database",
+    icon: Database,
+    id: "database",
+  },
 ] as const;
 
 export function SkillTabs() {
@@ -16,13 +34,13 @@ export function SkillTabs() {
   const currentTab = (search as any).tab || "frontend";
 
   return (
-    <TabNav 
-      tabs={TABS.map(t => ({
+    <TabNav
+      tabs={TABS.map((t) => ({
         ...t,
         to: t.to as string,
-        search: (t as any).search
-      }))} 
-      activeTab={currentTab} 
+        search: (t as any).search,
+      }))}
+      activeTab={currentTab}
     />
   );
 }

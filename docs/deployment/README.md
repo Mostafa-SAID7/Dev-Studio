@@ -5,6 +5,7 @@ Complete guide for deploying Dev Studio to production.
 ## Overview
 
 Dev Studio is deployed to **Cloudflare Workers** for:
+
 - Global edge distribution
 - Zero cold starts
 - Automatic scaling
@@ -215,11 +216,13 @@ Configure caching headers in `wrangler.jsonc`:
 ### Deployment Failed
 
 1. Check build output:
+
    ```bash
    npm run build
    ```
 
 2. Verify environment variables:
+
    ```bash
    wrangler env list
    ```
@@ -291,9 +294,9 @@ Configure CORS in your app:
 ```typescript
 // src/server.ts
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://dev-studio.example.com',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  "Access-Control-Allow-Origin": "https://dev-studio.example.com",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 ```
 
@@ -311,6 +314,7 @@ Cloudflare Workers automatically scales based on traffic. No configuration neede
 ## Cost
 
 Cloudflare Workers pricing:
+
 - **Free tier**: 100,000 requests/day
 - **Paid tier**: $0.50 per million requests
 

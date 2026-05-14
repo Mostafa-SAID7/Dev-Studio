@@ -1,12 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, PageContainer, TabNav } from "@/components/layout";
-import { 
-  Sparkles, 
-  Bot, 
-  Component as ComponentIcon, 
-  LayoutTemplate, 
-  Code2
-} from "lucide-react";
+import { Sparkles, Bot, Component as ComponentIcon, LayoutTemplate, Code2 } from "lucide-react";
 import { Prompts } from "@/components/tools/prompts";
 import { Agents } from "@/components/tools/agents";
 import { Components } from "@/components/tools/components";
@@ -58,12 +52,12 @@ function ToolsPage() {
           />
 
           <div className="w-full min-w-0">
-            <TabNav 
-              tabs={tabs.map(t => ({ 
-                ...t, 
-                onClick: () => setTab(t.id as ToolTab) 
-              }))} 
-              activeTab={tab as string} 
+            <TabNav
+              tabs={tabs.map((t) => ({
+                ...t,
+                onClick: () => setTab(t.id as ToolTab),
+              }))}
+              activeTab={tab as string}
             />
           </div>
         </div>

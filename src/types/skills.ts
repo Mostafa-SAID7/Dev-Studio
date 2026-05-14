@@ -1,3 +1,4 @@
+import { ElementType } from "react";
 import { FocusArea, Difficulty, AnswerDepth } from "./common";
 
 export interface InterviewQuestion {
@@ -36,7 +37,7 @@ export interface SkillChecklistItem {
 export interface SkillAreaData {
   id: AreaId;
   label: string;
-  icon: any;
+  icon: ElementType;
   description: string;
   concepts: SkillConcept[];
   resources: SkillResource[];
@@ -44,7 +45,7 @@ export interface SkillAreaData {
   subAreas?: {
     id: string;
     label: string;
-    icon?: any;
+    icon?: ElementType;
     color: string;
     accent: string;
     tags: string[];

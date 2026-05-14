@@ -56,6 +56,7 @@ chore: update dependencies
 ```
 
 Example:
+
 ```
 feat: add prompt versioning
 
@@ -80,12 +81,14 @@ npm run test -- --run
 ### Before Submitting
 
 1. **Update your branch** with latest changes:
+
    ```bash
    git fetch upstream
    git rebase upstream/develop
    ```
 
 2. **Run tests and linting**:
+
    ```bash
    npm run lint
    npm run test -- --run
@@ -97,6 +100,7 @@ npm run test -- --run
 ### Submitting PR
 
 1. **Push to your fork**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -272,6 +276,7 @@ git stash
 ## Recognition
 
 Contributors will be recognized in:
+
 - README.md contributors section
 - Release notes
 - GitHub contributors page

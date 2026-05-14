@@ -12,7 +12,8 @@ interface Props {
 }
 
 export function InterviewSection({ data }: Props) {
-  const { interviewQuestions, toggleFavoriteInterviewQuestion, deleteInterviewQuestion } = useForge();
+  const { interviewQuestions, toggleFavoriteInterviewQuestion, deleteInterviewQuestion } =
+    useForge();
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
@@ -25,10 +26,8 @@ export function InterviewSection({ data }: Props) {
       interviewQuestions
         .filter((q) => q.area === data.id)
         .filter((q) => diff === "all" || q.difficulty === diff)
-        .filter(
-          (q) => !search || q.question.toLowerCase().includes(search.toLowerCase())
-        ),
-    [interviewQuestions, data.id, diff, search]
+        .filter((q) => !search || q.question.toLowerCase().includes(search.toLowerCase())),
+    [interviewQuestions, data.id, diff, search],
   );
 
   const toggleExpanded = (id: string) =>
@@ -38,8 +37,14 @@ export function InterviewSection({ data }: Props) {
       return n;
     });
 
-  const openAdd = () => { setEditingQ(null); setDialogOpen(true); };
-  const openEdit = (q: InterviewQuestion) => { setEditingQ(q); setDialogOpen(true); };
+  const openAdd = () => {
+    setEditingQ(null);
+    setDialogOpen(true);
+  };
+  const openEdit = (q: InterviewQuestion) => {
+    setEditingQ(q);
+    setDialogOpen(true);
+  };
 
   return (
     <div className="space-y-8">
@@ -105,10 +110,7 @@ export function InterviewSection({ data }: Props) {
             <p className="text-sm text-muted-foreground">
               No questions found. Try adjusting your search or difficulty filter.
             </p>
-            <button
-              onClick={openAdd}
-              className="mt-4 text-xs text-primary hover:underline"
-            >
+            <button onClick={openAdd} className="mt-4 text-xs text-primary hover:underline">
               Add the first question
             </button>
           </div>

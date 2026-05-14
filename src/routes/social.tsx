@@ -27,8 +27,18 @@ const SOCIAL_TABS = [
 
 // Seed Data
 const INITIAL_DRAFTS: Draft[] = [
-  { id: "1", platform: "linkedin", content: "Excited to share my new side project! #buildinpublic", updatedAt: "2 mins ago" },
-  { id: "2", platform: "twitter", content: "Just shipped a massive update to the UI. The layout engine is finally stable.", updatedAt: "1 hour ago" },
+  {
+    id: "1",
+    platform: "linkedin",
+    content: "Excited to share my new side project! #buildinpublic",
+    updatedAt: "2 mins ago",
+  },
+  {
+    id: "2",
+    platform: "twitter",
+    content: "Just shipped a massive update to the UI. The layout engine is finally stable.",
+    updatedAt: "1 hour ago",
+  },
 ];
 
 function SocialPage() {
@@ -58,8 +68,8 @@ function SocialPage() {
 
   // Switch active draft when platform changes
   useEffect(() => {
-    const platformDrafts = drafts.filter(d => d.platform === tab);
-    if (platformDrafts.length > 0 && !platformDrafts.some(d => d.id === activeDraftId)) {
+    const platformDrafts = drafts.filter((d) => d.platform === tab);
+    if (platformDrafts.length > 0 && !platformDrafts.some((d) => d.id === activeDraftId)) {
       setActiveDraftId(platformDrafts[0].id);
     } else if (platformDrafts.length === 0) {
       setActiveDraftId(null);
@@ -78,45 +88,45 @@ function SocialPage() {
   };
 
   const handleUpdateDraft = (updates: Partial<Draft>) => {
-    setDrafts(prev => prev.map(d => 
-      d.id === activeDraftId ? { ...d, ...updates, updatedAt: "Just now" } : d
-    ));
+    setDrafts((prev) =>
+      prev.map((d) => (d.id === activeDraftId ? { ...d, ...updates, updatedAt: "Just now" } : d)),
+    );
   };
 
   const handleDeleteDraft = (id: string) => {
-    setDrafts(prev => prev.filter(d => d.id !== id));
+    setDrafts((prev) => prev.filter((d) => d.id !== id));
     if (activeDraftId === id) {
       setActiveDraftId(null);
     }
   };
 
-  const activeDraft = drafts.find(d => d.id === activeDraftId) || null;
+  const activeDraft = drafts.find((d) => d.id === activeDraftId) || null;
 
   return (
     <PageContainer>
       <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
         <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader 
+          <PageHeader
             title="Social Media Management"
             description="Manage your posts, threads, and updates across all social platforms."
             className="mb-6"
           />
           <div className="w-full">
-            <TabNav 
+            <TabNav
               tabs={SOCIAL_TABS.map((t) => ({
                 ...t,
-                onClick: () => navigate({ to: ".", search: { tab: t.id } })
-              }))} 
-              activeTab={tab} 
+                onClick: () => navigate({ to: ".", search: { tab: t.id } }),
+              }))}
+              activeTab={tab}
             />
           </div>
         </div>
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <SplitLayout 
+        <SplitLayout
           sidebar={
-            <SocialSidebar 
+            <SocialSidebar
               platform={tab}
               drafts={drafts}
               activeDraftId={activeDraftId}
@@ -124,12 +134,12 @@ function SocialPage() {
               onNewDraft={handleNewDraft}
               onDeleteDraft={handleDeleteDraft}
             />
-          } 
-          sidebarWidth="lg:w-[260px]" 
+          }
+          sidebarWidth="lg:w-[260px]"
           className="border-t border-border"
         >
           <div className="overflow-y-auto scrollbar-thin h-full w-full">
-            <PostEditor 
+            <PostEditor
               platform={tab}
               activeDraft={activeDraft}
               onUpdateDraft={handleUpdateDraft}

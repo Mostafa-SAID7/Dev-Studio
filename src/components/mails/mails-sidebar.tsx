@@ -19,8 +19,15 @@ interface MailsSidebarProps {
   onDeleteTemplate: (id: string) => void;
 }
 
-export function MailsSidebar({ channel, templates, activeTemplateId, onSelectTemplate, onNewTemplate, onDeleteTemplate }: MailsSidebarProps) {
-  const channelTemplates = templates.filter(t => t.channel === channel);
+export function MailsSidebar({
+  channel,
+  templates,
+  activeTemplateId,
+  onSelectTemplate,
+  onNewTemplate,
+  onDeleteTemplate,
+}: MailsSidebarProps) {
+  const channelTemplates = templates.filter((t) => t.channel === channel);
 
   return (
     <div className="p-6 h-full flex flex-col min-h-0">
@@ -38,10 +45,8 @@ export function MailsSidebar({ channel, templates, activeTemplateId, onSelectTem
         </div>
       </div>
       <div className="flex items-center justify-between px-3 py-2">
-        <span className="text-xs font-medium text-muted-foreground">
-          Saved Templates
-        </span>
-        <button 
+        <span className="text-xs font-medium text-muted-foreground">Saved Templates</span>
+        <button
           onClick={onNewTemplate}
           className="text-muted-foreground hover:text-primary transition-colors"
         >
@@ -50,21 +55,25 @@ export function MailsSidebar({ channel, templates, activeTemplateId, onSelectTem
       </div>
       <nav className="space-y-1 overflow-y-auto flex-1 mt-2 pr-2 scrollbar-thin">
         {channelTemplates.length > 0 ? (
-          channelTemplates.map(template => (
+          channelTemplates.map((template) => (
             <div
               key={template.id}
               className={`group relative w-full text-left px-3 py-2 rounded-md text-sm transition-colors cursor-pointer ${
-                activeTemplateId === template.id 
-                  ? "bg-primary/10 text-primary" 
+                activeTemplateId === template.id
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-card hover:text-foreground"
               }`}
               onClick={() => onSelectTemplate(template.id)}
             >
               <div className="pr-6">
-                <div className={`truncate ${activeTemplateId === template.id ? "font-medium" : ""}`}>
+                <div
+                  className={`truncate ${activeTemplateId === template.id ? "font-medium" : ""}`}
+                >
                   {template.subject || template.recipient || "Untitled Template"}
                 </div>
-                <div className="truncate text-xs text-muted-foreground mt-0.5">{template.content || "Empty content"}</div>
+                <div className="truncate text-xs text-muted-foreground mt-0.5">
+                  {template.content || "Empty content"}
+                </div>
                 <div className="text-[10px] opacity-70 mt-1">{template.updatedAt}</div>
               </div>
               <button

@@ -26,9 +26,33 @@ const CONNECTORS_TABS = [
 ];
 
 const INITIAL_CONNECTORS: Connector[] = [
-  { id: "1", type: "companies", name: "TechNova Inc.", email: "contact@technova.com", phone: "+1 234 567 8900", notes: "Looking to hire in Q3.", updatedAt: "2 days ago" },
-  { id: "2", type: "hr", name: "Sarah Jenkins", email: "sarah.j@example.com", phone: "+1 555 123 4567", notes: "Met at Tech Conference 2024.", updatedAt: "1 week ago" },
-  { id: "3", type: "clients", name: "Acme Corp", email: "projects@acme.com", phone: "+44 20 7946 0958", notes: "Interested in a frontend revamp.", updatedAt: "Just now" },
+  {
+    id: "1",
+    type: "companies",
+    name: "TechNova Inc.",
+    email: "contact@technova.com",
+    phone: "+1 234 567 8900",
+    notes: "Looking to hire in Q3.",
+    updatedAt: "2 days ago",
+  },
+  {
+    id: "2",
+    type: "hr",
+    name: "Sarah Jenkins",
+    email: "sarah.j@example.com",
+    phone: "+1 555 123 4567",
+    notes: "Met at Tech Conference 2024.",
+    updatedAt: "1 week ago",
+  },
+  {
+    id: "3",
+    type: "clients",
+    name: "Acme Corp",
+    email: "projects@acme.com",
+    phone: "+44 20 7946 0958",
+    notes: "Interested in a frontend revamp.",
+    updatedAt: "Just now",
+  },
 ];
 
 function ConnectorsPage() {
@@ -58,8 +82,8 @@ function ConnectorsPage() {
 
   // Switch active connector when tab changes
   useEffect(() => {
-    const tabConnectors = connectors.filter(c => c.type === tab);
-    if (tabConnectors.length > 0 && !tabConnectors.some(c => c.id === activeConnectorId)) {
+    const tabConnectors = connectors.filter((c) => c.type === tab);
+    if (tabConnectors.length > 0 && !tabConnectors.some((c) => c.id === activeConnectorId)) {
       setActiveConnectorId(tabConnectors[0].id);
     } else if (tabConnectors.length === 0) {
       setActiveConnectorId(null);
@@ -81,45 +105,47 @@ function ConnectorsPage() {
   };
 
   const handleUpdateConnector = (updates: Partial<Connector>) => {
-    setConnectors(prev => prev.map(c => 
-      c.id === activeConnectorId ? { ...c, ...updates, updatedAt: "Just now" } : c
-    ));
+    setConnectors((prev) =>
+      prev.map((c) =>
+        c.id === activeConnectorId ? { ...c, ...updates, updatedAt: "Just now" } : c,
+      ),
+    );
   };
 
   const handleDeleteConnector = (id: string) => {
-    setConnectors(prev => prev.filter(c => c.id !== id));
+    setConnectors((prev) => prev.filter((c) => c.id !== id));
     if (activeConnectorId === id) {
       setActiveConnectorId(null);
     }
   };
 
-  const activeConnector = connectors.find(c => c.id === activeConnectorId) || null;
+  const activeConnector = connectors.find((c) => c.id === activeConnectorId) || null;
 
   return (
     <PageContainer>
       <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
         <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader 
+          <PageHeader
             title="Connectors"
             description="Manage your professional network, clients, and company contacts."
             className="mb-6"
           />
           <div className="w-full overflow-hidden">
-            <TabNav 
+            <TabNav
               tabs={CONNECTORS_TABS.map((t) => ({
                 ...t,
-                onClick: () => navigate({ to: ".", search: { tab: t.id } })
-              }))} 
-              activeTab={tab} 
+                onClick: () => navigate({ to: ".", search: { tab: t.id } }),
+              }))}
+              activeTab={tab}
             />
           </div>
         </div>
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <SplitLayout 
+        <SplitLayout
           sidebar={
-            <ConnectorsSidebar 
+            <ConnectorsSidebar
               type={tab}
               connectors={connectors}
               activeConnectorId={activeConnectorId}
@@ -127,12 +153,12 @@ function ConnectorsPage() {
               onNewConnector={handleNewConnector}
               onDeleteConnector={handleDeleteConnector}
             />
-          } 
-          sidebarWidth="lg:w-[260px]" 
+          }
+          sidebarWidth="lg:w-[260px]"
           className="border-t border-border"
         >
           <div className="overflow-y-auto scrollbar-thin h-full w-full">
-            <ConnectorEditor 
+            <ConnectorEditor
               type={tab}
               activeConnector={activeConnector}
               onUpdateConnector={handleUpdateConnector}

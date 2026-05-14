@@ -14,10 +14,14 @@ export function PageHeader({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 ${className}`}>
+    <div
+      className={`flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 ${className}`}
+    >
       <div>
         {eyebrow ? (
-          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-2">{eyebrow}</p>
+          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-2">
+            {eyebrow}
+          </p>
         ) : null}
         <h1 className="text-2xl font-semibold tracking-tight text-balance">{title}</h1>
         {description ? (

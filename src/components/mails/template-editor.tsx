@@ -1,7 +1,13 @@
 import { Save } from "lucide-react";
 import type { MailTemplate } from "./mails-sidebar";
 import { Input, TextArea } from "@/components/tools/shared";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +18,12 @@ interface TemplateEditorProps {
   onSave: () => void;
 }
 
-export function TemplateEditor({ channel, activeTemplate, onUpdateTemplate, onSave }: TemplateEditorProps) {
+export function TemplateEditor({
+  channel,
+  activeTemplate,
+  onUpdateTemplate,
+  onSave,
+}: TemplateEditorProps) {
   if (!activeTemplate) {
     return (
       <div className="flex-1 flex items-center justify-center h-full text-muted-foreground">
@@ -24,17 +35,22 @@ export function TemplateEditor({ channel, activeTemplate, onUpdateTemplate, onSa
   return (
     <div className="w-full max-w-[1400px] mx-auto p-4 sm:p-10 h-full flex flex-col overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h2 className="text-xl sm:text-2xl font-semibold capitalize">{channel.replace("-", " ")} Workspace</h2>
-        <Button onClick={onSave} className="flex items-center gap-2 w-full sm:w-auto justify-center">
+        <h2 className="text-xl sm:text-2xl font-semibold capitalize">
+          {channel.replace("-", " ")} Workspace
+        </h2>
+        <Button
+          onClick={onSave}
+          className="flex items-center gap-2 w-full sm:w-auto justify-center"
+        >
           <Save className="size-4" /> Save Template
         </Button>
       </div>
-      
+
       <div className="flex-1 flex flex-col gap-4 overflow-y-auto pr-1 scrollbar-thin">
         <div className="bg-card border border-border rounded-lg p-3 flex flex-col sm:flex-row flex-wrap gap-4">
           <div className="flex-1 min-w-0 flex items-center gap-3">
             <span className="text-sm font-medium text-muted-foreground w-12 shrink-0">To:</span>
-            <Input 
+            <Input
               type="text"
               value={activeTemplate.recipient || ""}
               onChange={(e) => onUpdateTemplate({ recipient: e.target.value })}
@@ -44,8 +60,8 @@ export function TemplateEditor({ channel, activeTemplate, onUpdateTemplate, onSa
           </div>
           <div className="flex-1 min-w-0 flex items-center gap-3">
             <span className="text-sm font-medium text-muted-foreground w-12 shrink-0">Tone:</span>
-            <Select 
-              value={activeTemplate.tone || "professional"} 
+            <Select
+              value={activeTemplate.tone || "professional"}
               onValueChange={(value) => onUpdateTemplate({ tone: value })}
             >
               <SelectTrigger className="flex-1 h-9">
@@ -63,8 +79,10 @@ export function TemplateEditor({ channel, activeTemplate, onUpdateTemplate, onSa
 
         {channel === "gmail" && (
           <div className="bg-card border border-border rounded-lg p-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-            <span className="text-sm font-medium text-muted-foreground sm:w-14 shrink-0">Subject:</span>
-            <Input 
+            <span className="text-sm font-medium text-muted-foreground sm:w-14 shrink-0">
+              Subject:
+            </span>
+            <Input
               type="text"
               value={activeTemplate.subject || ""}
               onChange={(e) => onUpdateTemplate({ subject: e.target.value })}
@@ -75,10 +93,10 @@ export function TemplateEditor({ channel, activeTemplate, onUpdateTemplate, onSa
         )}
 
         <div className="flex-1 bg-card border border-border rounded-lg p-4 sm:p-6 flex flex-col">
-          <TextArea 
+          <TextArea
             value={activeTemplate.content || ""}
             onChange={(e) => onUpdateTemplate({ content: e.target.value })}
-            className="w-full flex-1 resize-none border-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 shadow-none text-sm leading-relaxed" 
+            className="w-full flex-1 resize-none border-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 shadow-none text-sm leading-relaxed"
             placeholder={`Write your ${channel.replace("-", " ")} message here...\n\nTips:\n- Use [Name] as a placeholder\n- Keep your tone consistent`}
           />
           <div className="mt-4 pt-4 border-t border-border flex flex-col sm:flex-row justify-between sm:items-center gap-2 text-[11px] text-muted-foreground font-mono">

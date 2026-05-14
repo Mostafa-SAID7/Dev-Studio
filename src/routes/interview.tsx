@@ -10,7 +10,10 @@ export const Route = createFileRoute("/interview")({
   head: () => ({
     meta: [
       { title: "Interview — Dev Studio" },
-      { name: "description", content: "Top interview Q&A for frontend, backend, DevOps and testing." },
+      {
+        name: "description",
+        content: "Top interview Q&A for frontend, backend, DevOps and testing.",
+      },
     ],
   }),
   component: InterviewPage,
@@ -35,12 +38,12 @@ function InterviewPage() {
           />
 
           <div className="w-full">
-            <TabNav 
-              tabs={tabs.map(t => ({ 
-                ...t, 
-                onClick: () => setTab(t.id as InterviewTab) 
-              }))} 
-              activeTab={tab} 
+            <TabNav
+              tabs={tabs.map((t) => ({
+                ...t,
+                onClick: () => setTab(t.id as InterviewTab),
+              }))}
+              activeTab={tab}
             />
           </div>
         </div>
@@ -55,10 +58,10 @@ function InterviewPage() {
             </div>
             <h2 className="text-2xl font-bold tracking-tight">AI Mock Interview</h2>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Our mock interview chat is currently being calibrated for 3.5 Sonnet. 
-              Stay tuned for real-time technical assessments!
+              Our mock interview chat is currently being calibrated for 3.5 Sonnet. Stay tuned for
+              real-time technical assessments!
             </p>
-            <button 
+            <button
               onClick={() => setTab("questions")}
               className="mt-6 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity"
             >

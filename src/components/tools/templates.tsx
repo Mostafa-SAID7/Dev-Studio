@@ -1,7 +1,16 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, newId } from "@/lib/store";
-import { LayoutTemplate, Plus, Trash2, Search, Check, Layers, ListTree, StickyNote } from "lucide-react";
+import {
+  LayoutTemplate,
+  Plus,
+  Trash2,
+  Search,
+  Check,
+  Layers,
+  ListTree,
+  StickyNote,
+} from "lucide-react";
 import { toast } from "sonner";
 import type { Template } from "@/types/tools";
 import { Field, Input, TextArea } from "./shared";
@@ -115,7 +124,14 @@ export function Templates({ selectedId }: { selectedId?: string }) {
               <Field label="Tech Stack">
                 <Input
                   value={selected.stack.join(", ")}
-                  onChange={(e) => update({ stack: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })}
+                  onChange={(e) =>
+                    update({
+                      stack: e.target.value
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    })
+                  }
                   className="font-mono"
                   placeholder="React, Next.js, etc."
                 />
@@ -123,7 +139,14 @@ export function Templates({ selectedId }: { selectedId?: string }) {
               <Field label="Tags">
                 <Input
                   value={selected.tags.join(", ")}
-                  onChange={(e) => update({ tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })}
+                  onChange={(e) =>
+                    update({
+                      tags: e.target.value
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    })
+                  }
                   className="font-mono"
                   placeholder="saas, internal-tool, etc."
                 />
@@ -174,7 +197,10 @@ export function Templates({ selectedId }: { selectedId?: string }) {
         <section className="grid place-items-center p-8 text-center flex-1">
           <div>
             <LayoutTemplate className="size-10 text-muted-foreground mx-auto mb-3" />
-            <button onClick={create} className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md">
+            <button
+              onClick={create}
+              className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md"
+            >
               Save your first template
             </button>
           </div>

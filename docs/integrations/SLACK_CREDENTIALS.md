@@ -9,10 +9,12 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** Unique identifier for your Slack app
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → Basic Information
 - Format: `A0123456789`
 
 **Usage:**
+
 - Identifying your app
 - OAuth flows
 - API requests
@@ -24,10 +26,12 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** OAuth 2.0 client identifier
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → OAuth & Permissions
 - Format: `123456789012.1234567890123`
 
 **Usage:**
+
 - OAuth authorization requests
 - Identifying your app to Slack
 - Token exchange
@@ -39,15 +43,18 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** OAuth 2.0 client secret for authentication
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → OAuth & Permissions
 - Format: Long alphanumeric string
 
 **Usage:**
+
 - Exchanging authorization code for token
 - Server-to-server authentication
 - Refreshing tokens
 
 **Security:** ⚠️ **KEEP SECRET** - Never commit to git
+
 - Store in GitHub Secrets
 - Store in `.env.local` (not committed)
 - Rotate regularly
@@ -57,16 +64,19 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** Token for bot user to perform actions
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → OAuth & Permissions
 - Format: `your-bot-token-goes-here`
 
 **Usage:**
+
 - Sending messages
 - Reading channels
 - User operations
 - All bot actions
 
 **Security:** ⚠️ **KEEP SECRET** - Never commit to git
+
 - Store in GitHub Secrets as `SLACK_BOT_TOKEN`
 - Store in `.env.local` (not committed)
 - Rotate if compromised
@@ -76,15 +86,18 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** Secret for verifying requests from Slack
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → Basic Information
 - Format: Long alphanumeric string
 
 **Usage:**
+
 - Verifying webhook requests
 - Confirming requests come from Slack
 - Security validation
 
 **Security:** ⚠️ **KEEP SECRET** - Never commit to git
+
 - Store in GitHub Secrets as `SLACK_SIGNING_SECRET`
 - Store in `.env.local` (not committed)
 - Use for request verification
@@ -94,9 +107,11 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** Legacy token for verifying requests
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → Basic Information
 
 **Usage:**
+
 - Legacy request verification
 - Deprecated - use Signing Secret instead
 
@@ -107,15 +122,18 @@ Complete guide to understanding and managing Slack credentials for Dev Studio.
 **What it is:** URL for sending messages to Slack
 
 **Where to find it:**
+
 - Slack API Dashboard → Your App → Incoming Webhooks
 - Format: `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXX`
 
 **Usage:**
+
 - Sending notifications
 - Posting messages to channels
 - GitHub Actions notifications
 
 **Security:** ⚠️ **KEEP SECRET** - Never commit to git
+
 - Store in GitHub Secrets as `SLACK_WEBHOOK_URL`
 - Store in `.env.local` (not committed)
 - Regenerate if compromised
@@ -163,12 +181,14 @@ SLACK_SIGNING_SECRET=...
 ### 1. Never Commit Secrets
 
 ❌ **Bad:**
+
 ```bash
 git add .env
 git commit -m "Add Slack credentials"
 ```
 
 ✅ **Good:**
+
 ```bash
 # Add to .gitignore
 echo ".env.local" >> .gitignore
@@ -190,24 +210,21 @@ echo ".env.local" >> .gitignore
 
 ```typescript
 // Verify Slack request
-import crypto from 'crypto';
+import crypto from "crypto";
 
 function verifySlackRequest(req) {
-  const timestamp = req.headers['x-slack-request-timestamp'];
-  const signature = req.headers['x-slack-signature'];
-  
+  const timestamp = req.headers["x-slack-request-timestamp"];
+  const signature = req.headers["x-slack-signature"];
+
   const baseString = `v0:${timestamp}:${req.body}`;
   const hmac = crypto
-    .createHmac('sha256', process.env.SLACK_SIGNING_SECRET)
+    .createHmac("sha256", process.env.SLACK_SIGNING_SECRET)
     .update(baseString)
-    .digest('hex');
-  
+    .digest("hex");
+
   const computedSignature = `v0=${hmac}`;
-  
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(computedSignature)
-  );
+
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computedSignature));
 }
 ```
 

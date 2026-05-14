@@ -21,7 +21,10 @@ export function ResetPasswordForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} className="rounded-lg border border-border bg-card p-6 space-y-5 shadow-sm">
+    <form
+      onSubmit={onSubmit}
+      className="rounded-lg border border-border bg-card p-6 space-y-5 shadow-sm"
+    >
       <div className="flex items-center gap-2.5 mb-6">
         <div className="size-8 rounded-md bg-primary/10 grid place-items-center">
           <Lock className="size-4 text-primary" />
@@ -30,7 +33,9 @@ export function ResetPasswordForm() {
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">New password</label>
+        <label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground ml-1">
+          New password
+        </label>
         <Input
           type="password"
           required

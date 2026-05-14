@@ -24,7 +24,9 @@ export function AuthLayout({ children, showBackHome = true }: AuthLayoutProps) {
 
         {showBackHome && (
           <p className="mt-6 text-center text-xs text-muted-foreground">
-            <Link to="/" className="hover:text-foreground">← Back home</Link>
+            <Link to="/" className="hover:text-foreground">
+              ← Back home
+            </Link>
           </p>
         )}
       </div>

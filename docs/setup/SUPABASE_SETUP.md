@@ -55,6 +55,7 @@ CREATE POLICY "Users can insert their own profile"
 Email/password authentication is enabled by default.
 
 To customize:
+
 1. Go to **Authentication** → **Providers**
 2. Click **Email**
 3. Configure settings:

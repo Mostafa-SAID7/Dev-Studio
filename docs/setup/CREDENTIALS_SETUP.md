@@ -5,6 +5,7 @@ Complete guide for collecting and configuring all credentials for Dev Studio.
 ## Overview
 
 Dev Studio requires credentials from multiple services:
+
 - **Slack** - Team notifications
 - **Cloudflare** - Deployment and hosting
 - **Sentry** - Error tracking
@@ -21,35 +22,43 @@ Dev Studio requires credentials from multiple services:
 ### Credentials to Collect
 
 #### 1. Client ID
+
 ```
 11123859410146.11152194063904
 ```
+
 - **Location:** OAuth & Permissions
 - **Security:** Public (safe to share)
 - **Usage:** OAuth authorization flows
 
 #### 2. Client Secret ⚠️
+
 ```
 [REDACTED]
 ```
+
 - **Location:** OAuth & Permissions
 - **Security:** KEEP SECRET - Never commit to git
 - **Usage:** OAuth token exchange
 - **GitHub Secret:** `SLACK_CLIENT_SECRET`
 
 #### 3. Signing Secret ⚠️
+
 ```
 [REDACTED]
 ```
+
 - **Location:** Basic Information
 - **Security:** KEEP SECRET - Never commit to git
 - **Usage:** Verify requests from Slack
 - **GitHub Secret:** `SLACK_SIGNING_SECRET`
 
 #### 4. Verification Token (Deprecated) ⚠️
+
 ```
 [REDACTED]
 ```
+
 - **Location:** Basic Information
 - **Security:** KEEP SECRET - Deprecated but still secure
 - **Usage:** Legacy request verification
@@ -58,6 +67,7 @@ Dev Studio requires credentials from multiple services:
 ### Setup Instructions
 
 1. **Add to GitHub Secrets:**
+
    ```
    SLACK_APP_ID=A0B4G5Q1VSL
    SLACK_CLIENT_ID=11123859410146.11152194063904
@@ -67,6 +77,7 @@ Dev Studio requires credentials from multiple services:
    ```
 
 2. **Add to .env.local (local development):**
+
    ```env
    SLACK_APP_ID=A0B4G5Q1VSL
    SLACK_CLIENT_ID=11123859410146.11152194063904
@@ -98,15 +109,18 @@ Dev Studio requires credentials from multiple services:
 ### Credentials to Collect
 
 #### 1. API Token ⚠️
+
 ```
 [REDACTED]
 ```
+
 - **Location:** Cloudflare Dashboard → My Profile → API Tokens
 - **Security:** KEEP SECRET - Never commit to git
 - **Usage:** Deploy to Cloudflare Workers
 - **GitHub Secret:** `CLOUDFLARE_API_TOKEN`
 
 #### 2. Account ID
+
 - **Location:** Cloudflare Dashboard → Workers → Overview
 - **Security:** Public (safe to share)
 - **Usage:** Identify your Cloudflare account
@@ -122,6 +136,7 @@ curl "https://api.cloudflare.com/client/v4/user/tokens/verify" \
 ```
 
 Expected response:
+
 ```json
 {
   "success": true,
@@ -137,12 +152,14 @@ Expected response:
 ### Setup Instructions
 
 1. **Add to GitHub Secrets:**
+
    ```
    CLOUDFLARE_API_TOKEN=[REDACTED]
    CLOUDFLARE_ACCOUNT_ID=your_account_id
    ```
 
 2. **Add to .env.local:**
+
    ```env
    CLOUDFLARE_API_TOKEN=[REDACTED]
    CLOUDFLARE_ACCOUNT_ID=your_account_id
@@ -165,36 +182,44 @@ Expected response:
 ### Credentials to Collect
 
 #### 1. DSN (Data Source Name) ⚠️
+
 ```
 https://[REDACTED]@o4511383932567552.ingest.de.sentry.io/4511383934271568
 ```
+
 - **Location:** Sentry Project → Settings → Client Keys (DSN)
 - **Security:** KEEP SECRET - Contains project key
 - **Usage:** Initialize Sentry in your app
 - **GitHub Secret:** `SENTRY_DSN`
 
 #### 2. Auth Token ⚠️
+
 ```
 [REDACTED]
 ```
+
 - **Location:** Sentry → Settings → Auth Tokens
 - **Security:** KEEP SECRET - Never commit to git
 - **Usage:** Sentry CLI operations
 - **GitHub Secret:** `SENTRY_AUTH_TOKEN`
 
 #### 3. Organization Slug
+
 ```
 dev-studio-zp
 ```
+
 - **Location:** Sentry → Settings → Organization
 - **Security:** Public (safe to share)
 - **Usage:** Identify your Sentry organization
 - **GitHub Secret:** `SENTRY_ORG`
 
 #### 4. Project Slug
+
 ```
 your-project-slug
 ```
+
 - **Location:** Sentry Project → Settings
 - **Security:** Public (safe to share)
 - **Usage:** Identify your Sentry project
@@ -203,6 +228,7 @@ your-project-slug
 ### Setup Instructions
 
 1. **Add to GitHub Secrets:**
+
    ```
    SENTRY_DSN=https://[REDACTED]@o4511383932567552.ingest.de.sentry.io/4511383934271568
    SENTRY_AUTH_TOKEN=[REDACTED]
@@ -211,6 +237,7 @@ your-project-slug
    ```
 
 2. **Add to .env.local:**
+
    ```env
    SENTRY_DSN=https://[REDACTED]@o4511383932567552.ingest.de.sentry.io/4511383934271568
    SENTRY_AUTH_TOKEN=[REDACTED]
@@ -219,6 +246,7 @@ your-project-slug
    ```
 
 3. **Initialize Sentry in your app:**
+
    ```typescript
    import * as Sentry from "@sentry/react";
 
@@ -239,17 +267,20 @@ your-project-slug
 ### Credentials to Collect
 
 #### 1. Project URL
+
 - **Location:** Supabase Dashboard → Settings → API
 - **Format:** `https://your-project.supabase.co`
 - **Security:** Public (safe to share)
 - **GitHub Secret:** `VITE_SUPABASE_URL`
 
 #### 2. Anon Public Key
+
 - **Location:** Supabase Dashboard → Settings → API
 - **Security:** Public (safe to expose in frontend)
 - **GitHub Secret:** `VITE_SUPABASE_PUBLISHABLE_KEY`
 
 #### 3. Project ID
+
 - **Location:** Supabase Dashboard → Settings → General
 - **Security:** Public (safe to share)
 - **GitHub Secret:** `VITE_SUPABASE_PROJECT_ID`
@@ -261,6 +292,7 @@ See [Supabase Setup Guide](./SUPABASE_SETUP.md) for complete instructions.
 ## 📋 Complete Credentials Checklist
 
 ### Slack
+
 - [ ] App ID: `A0B4G5Q1VSL`
 - [ ] Client ID: `11123859410146.11152194063904`
 - [ ] Client Secret: `[REDACTED]`
@@ -270,16 +302,19 @@ See [Supabase Setup Guide](./SUPABASE_SETUP.md) for complete instructions.
 - [ ] Webhook URL: `https://hooks.slack.com/services/...`
 
 ### Cloudflare
+
 - [ ] API Token: `[REDACTED]`
 - [ ] Account ID: `your_account_id`
 
 ### Sentry
+
 - [ ] DSN: `https://[REDACTED]@o4511383932567552.ingest.de.sentry.io/4511383934271568`
 - [ ] Auth Token: `[REDACTED]`
 - [ ] Organization: `dev-studio-zp`
 - [ ] Project: `your-project-slug`
 
 ### Supabase
+
 - [ ] Project URL: `https://your-project.supabase.co`
 - [ ] Anon Key: `your_anon_key`
 - [ ] Project ID: `your_project_id`

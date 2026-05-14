@@ -17,8 +17,15 @@ interface SocialSidebarProps {
   onDeleteDraft: (id: string) => void;
 }
 
-export function SocialSidebar({ platform, drafts, activeDraftId, onSelectDraft, onNewDraft, onDeleteDraft }: SocialSidebarProps) {
-  const platformDrafts = drafts.filter(d => d.platform === platform);
+export function SocialSidebar({
+  platform,
+  drafts,
+  activeDraftId,
+  onSelectDraft,
+  onNewDraft,
+  onDeleteDraft,
+}: SocialSidebarProps) {
+  const platformDrafts = drafts.filter((d) => d.platform === platform);
 
   return (
     <div className="p-6 h-full flex flex-col min-h-0">
@@ -36,10 +43,8 @@ export function SocialSidebar({ platform, drafts, activeDraftId, onSelectDraft, 
         </div>
       </div>
       <div className="flex items-center justify-between px-3 py-2">
-        <span className="text-xs font-medium text-muted-foreground">
-          Post Drafts
-        </span>
-        <button 
+        <span className="text-xs font-medium text-muted-foreground">Post Drafts</span>
+        <button
           onClick={onNewDraft}
           className="text-muted-foreground hover:text-primary transition-colors"
         >
@@ -48,12 +53,12 @@ export function SocialSidebar({ platform, drafts, activeDraftId, onSelectDraft, 
       </div>
       <nav className="space-y-1 overflow-y-auto flex-1 mt-2 pr-2 scrollbar-thin">
         {platformDrafts.length > 0 ? (
-          platformDrafts.map(draft => (
+          platformDrafts.map((draft) => (
             <div
               key={draft.id}
               className={`group relative w-full text-left px-3 py-2 rounded-md text-sm transition-colors cursor-pointer ${
-                activeDraftId === draft.id 
-                  ? "bg-primary/10 text-primary" 
+                activeDraftId === draft.id
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-card hover:text-foreground"
               }`}
               onClick={() => onSelectDraft(draft.id)}
@@ -62,7 +67,11 @@ export function SocialSidebar({ platform, drafts, activeDraftId, onSelectDraft, 
                 <div className={`truncate ${activeDraftId === draft.id ? "font-medium" : ""}`}>
                   {draft.content || "New Draft"}
                 </div>
-                {draft.tags && <div className="truncate text-[10px] text-muted-foreground mt-0.5">{draft.tags}</div>}
+                {draft.tags && (
+                  <div className="truncate text-[10px] text-muted-foreground mt-0.5">
+                    {draft.tags}
+                  </div>
+                )}
                 <div className="text-[10px] opacity-70 mt-1">{draft.updatedAt}</div>
               </div>
               <button

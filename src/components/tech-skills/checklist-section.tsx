@@ -31,7 +31,9 @@ export function ChecklistSection({ data }: Props) {
       {/* Progress bar */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
-          <span>{done} / {total} completed</span>
+          <span>
+            {done} / {total} completed
+          </span>
           <span>{pct}%</span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">

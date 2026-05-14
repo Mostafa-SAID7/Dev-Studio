@@ -11,7 +11,13 @@ import {
 import { useForge } from "@/lib/store";
 import { Sparkles, Bot, Component, LayoutTemplate, Code2, LayoutDashboard } from "lucide-react";
 
-export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+export function CommandPalette({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+}) {
   const navigate = useNavigate();
   const { prompts, agents, components, templates, snippets } = useForge();
 
@@ -27,12 +33,24 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
         <CommandEmpty>No results found.</CommandEmpty>
 
         <CommandGroup heading="Navigate">
-          <CommandItem onSelect={() => go("/")}><LayoutDashboard className="size-4 mr-2" /> Dashboard</CommandItem>
-          <CommandItem onSelect={() => go("/tools", { tab: "prompts" })}><Sparkles className="size-4 mr-2" /> Prompts Library</CommandItem>
-          <CommandItem onSelect={() => go("/tools", { tab: "agents" })}><Bot className="size-4 mr-2" /> AI Agents</CommandItem>
-          <CommandItem onSelect={() => go("/tools", { tab: "components" })}><Component className="size-4 mr-2" /> Components</CommandItem>
-          <CommandItem onSelect={() => go("/tools", { tab: "templates" })}><LayoutTemplate className="size-4 mr-2" /> Templates</CommandItem>
-          <CommandItem onSelect={() => go("/tools", { tab: "snippets" })}><Code2 className="size-4 mr-2" /> Snippets</CommandItem>
+          <CommandItem onSelect={() => go("/")}>
+            <LayoutDashboard className="size-4 mr-2" /> Dashboard
+          </CommandItem>
+          <CommandItem onSelect={() => go("/tools", { tab: "prompts" })}>
+            <Sparkles className="size-4 mr-2" /> Prompts Library
+          </CommandItem>
+          <CommandItem onSelect={() => go("/tools", { tab: "agents" })}>
+            <Bot className="size-4 mr-2" /> AI Agents
+          </CommandItem>
+          <CommandItem onSelect={() => go("/tools", { tab: "components" })}>
+            <Component className="size-4 mr-2" /> Components
+          </CommandItem>
+          <CommandItem onSelect={() => go("/tools", { tab: "templates" })}>
+            <LayoutTemplate className="size-4 mr-2" /> Templates
+          </CommandItem>
+          <CommandItem onSelect={() => go("/tools", { tab: "snippets" })}>
+            <Code2 className="size-4 mr-2" /> Snippets
+          </CommandItem>
         </CommandGroup>
 
         <CommandSeparator />
@@ -42,7 +60,9 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
             <CommandItem key={p.id} onSelect={() => go("/tools", { tab: "prompts", id: p.id })}>
               <Sparkles className="size-4 mr-2 text-primary" />
               <span>{p.title}</span>
-              <span className="ml-auto text-[10px] font-mono text-muted-foreground">{p.category}</span>
+              <span className="ml-auto text-[10px] font-mono text-muted-foreground">
+                {p.category}
+              </span>
             </CommandItem>
           ))}
         </CommandGroup>
@@ -52,7 +72,9 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
             <CommandItem key={a.id} onSelect={() => go("/tools", { tab: "agents", id: a.id })}>
               <Bot className="size-4 mr-2 text-accent" />
               {a.name}
-              <span className="ml-auto text-[10px] font-mono text-muted-foreground">{a.status}</span>
+              <span className="ml-auto text-[10px] font-mono text-muted-foreground">
+                {a.status}
+              </span>
             </CommandItem>
           ))}
         </CommandGroup>

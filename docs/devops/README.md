@@ -5,6 +5,7 @@ Complete guide for CI/CD, Docker, monitoring, and infrastructure.
 ## Overview
 
 This guide covers:
+
 - **CI/CD Pipelines** - Automated testing and deployment
 - **Docker** - Containerization for development and production
 - **Monitoring** - Error tracking and performance monitoring
@@ -119,18 +120,22 @@ supabase/
 Our infrastructure is designed for scalability and reliability, leveraging modern DevOps practices.
 
 ### CI/CD
+
 Automated pipelines handle linting, testing, and deployment.
 → **[CI/CD Setup Guide](./CICD.md)**
 
 ### Containerization
+
 Docker is used for environment consistency across development and production.
 → **[Docker Guide](./DOCKER.md)**
 
 ### Monitoring
+
 Real-time error tracking and performance analytics.
 → **[Monitoring & Logging](./MONITORING.md)**
 
 ### Database & Security
+
 Standardized migration workflows and security hardening guidelines.
 → **[Database Management](./DATABASE.md)** | **[Security Best Practices](./SECURITY.md)**
 

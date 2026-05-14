@@ -7,6 +7,7 @@ Helper scripts for Dev Studio development and contribution.
 ### Setup Scripts
 
 #### `setup.bat` (Windows)
+
 Configure Git for contribution.
 
 ```bash
@@ -14,12 +15,14 @@ scripts/setup.bat
 ```
 
 **What it does:**
+
 - Checks if Git is installed
 - Prompts for your email and name
 - Configures Git globally
 - Shows next steps
 
 #### `setup.sh` (macOS/Linux)
+
 Configure Git for contribution.
 
 ```bash
@@ -27,6 +30,7 @@ Configure Git for contribution.
 ```
 
 **What it does:**
+
 - Checks if Git is installed
 - Prompts for your email and name
 - Configures Git globally
@@ -35,6 +39,7 @@ Configure Git for contribution.
 ### Push Scripts
 
 #### `push.bat` (Windows)
+
 Push your changes to GitHub.
 
 ```bash
@@ -42,6 +47,7 @@ scripts/push.bat
 ```
 
 **What it does:**
+
 - Verifies Git is configured
 - Shows pending commits
 - Asks for confirmation
@@ -49,6 +55,7 @@ scripts/push.bat
 - Shows next steps
 
 #### `push.sh` (macOS/Linux)
+
 Push your changes to GitHub.
 
 ```bash
@@ -56,6 +63,7 @@ Push your changes to GitHub.
 ```
 
 **What it does:**
+
 - Verifies Git is configured
 - Shows pending commits
 - Asks for confirmation
@@ -67,6 +75,7 @@ Push your changes to GitHub.
 ### Windows
 
 1. **Setup Git:**
+
    ```bash
    scripts/setup.bat
    ```
@@ -79,6 +88,7 @@ Push your changes to GitHub.
 ### macOS/Linux
 
 1. **Setup Git:**
+
    ```bash
    chmod +x scripts/setup.sh
    ./scripts/setup.sh
@@ -95,17 +105,20 @@ Push your changes to GitHub.
 If you prefer to run commands manually:
 
 ### Configure Git
+
 ```bash
 git config --global user.email "your-email@example.com"
 git config --global user.name "Your Name"
 ```
 
 ### Check Pending Commits
+
 ```bash
 git log --oneline -3
 ```
 
 ### Push to GitHub
+
 ```bash
 git push -u origin main
 ```
@@ -113,17 +126,22 @@ git push -u origin main
 ## Troubleshooting
 
 ### "Permission denied" (macOS/Linux)
+
 Make scripts executable:
+
 ```bash
 chmod +x scripts/setup.sh
 chmod +x scripts/push.sh
 ```
 
 ### "Git not found"
+
 Install Git from: https://git-scm.com/download
 
 ### "Authentication failed"
+
 See `CONTRIBUTE_SETUP.md` for authentication options:
+
 - Personal Access Token
 - SSH Key
 - Git Credential Manager

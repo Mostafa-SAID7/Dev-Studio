@@ -96,7 +96,7 @@ Environment variables are validated on app startup:
 ```typescript
 // src/integrations/supabase/client.ts
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  throw new Error('Missing required Supabase environment variables');
+  throw new Error("Missing required Supabase environment variables");
 }
 ```
 

@@ -50,7 +50,12 @@ function ProfilePage() {
     <PageContainer className="overflow-y-auto">
       <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
         <div className="max-w-[1400px] mx-auto">
-          <PageHeader eyebrow="Account" title="Profile" description="Manage your personal account settings." className="mb-8" />
+          <PageHeader
+            eyebrow="Account"
+            title="Profile"
+            description="Manage your personal account settings."
+            className="mb-8"
+          />
         </div>
       </div>
       <div className="flex-1 p-4 sm:p-8">
@@ -60,9 +65,14 @@ function ProfilePage() {
               <Loader2 className="size-4 animate-spin" /> Loading…
             </div>
           ) : (
-            <form onSubmit={onSave} className="space-y-4 rounded-lg border border-border bg-card p-5 shadow-sm">
+            <form
+              onSubmit={onSave}
+              className="space-y-4 rounded-lg border border-border bg-card p-5 shadow-sm"
+            >
               <div>
-                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Email</label>
+                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                  Email
+                </label>
                 <Input
                   disabled
                   value={user?.email ?? ""}
@@ -70,7 +80,9 @@ function ProfilePage() {
                 />
               </div>
               <div>
-                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Display name</label>
+                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                  Display name
+                </label>
                 <Input
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
@@ -79,7 +91,9 @@ function ProfilePage() {
                 />
               </div>
               <div>
-                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Avatar URL</label>
+                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                  Avatar URL
+                </label>
                 <Input
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}

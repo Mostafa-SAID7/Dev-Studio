@@ -5,6 +5,7 @@ Complete guide for continuous integration and deployment with GitHub Actions.
 ## Overview
 
 GitHub Actions automatically:
+
 - Lint code on every push
 - Type check with TypeScript
 - Build the application
@@ -19,12 +20,14 @@ GitHub Actions automatically:
 Runs on every push and pull request.
 
 **Jobs:**
+
 1. **Lint** - ESLint validation
 2. **Build** - Build application
 3. **Test** - Run test suite
 4. **Security** - Vulnerability scanning
 
 **Triggers:**
+
 - Push to `main` or `develop`
 - Pull request to `main` or `develop`
 
@@ -33,12 +36,14 @@ Runs on every push and pull request.
 Runs on push to `main` branch only.
 
 **Jobs:**
+
 1. **Lint** - Code quality check
 2. **Build** - Build application
 3. **Deploy** - Deploy to Cloudflare Workers
 4. **Notify** - Send Slack notification
 
 **Triggers:**
+
 - Push to `main` branch only
 
 ## Setup
@@ -63,6 +68,7 @@ SLACK_WEBHOOK_URL (optional)
 Go to **Settings** → **Environments**
 
 Create `production` environment:
+
 - Add deployment branch: `main`
 - Add required reviewers (optional)
 - Add secrets specific to production
@@ -91,8 +97,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
       - run: npm ci
       - run: npm run lint
       - run: npx tsc --noEmit
@@ -104,8 +110,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
       - run: npm ci
       - run: npm run build
       - uses: actions/upload-artifact@v4
@@ -120,8 +126,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
       - run: npm ci
       - run: npm run test -- --run
         continue-on-error: true
@@ -132,12 +138,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          scan-type: "fs"
+          format: "sarif"
+          output: "trivy-results.sarif"
       - uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 ```
 
 ### Deploy Workflow
@@ -157,8 +163,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
       - run: npm ci
       - run: npm run lint
       - run: npx tsc --noEmit
@@ -282,7 +288,7 @@ Run workflow on schedule:
 ```yaml
 on:
   schedule:
-    - cron: '0 0 * * *'  # Daily at midnight
+    - cron: "0 0 * * *" # Daily at midnight
 ```
 
 ### Manual Trigger
@@ -294,9 +300,9 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: true
-        default: 'staging'
+        default: "staging"
 ```
 
 ## Related Documentation

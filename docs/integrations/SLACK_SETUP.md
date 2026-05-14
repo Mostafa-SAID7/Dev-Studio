@@ -5,6 +5,7 @@ Complete guide for integrating Dev Studio with Slack.
 ## Overview
 
 Slack integration enables:
+
 - Deployment notifications
 - Error alerts
 - Build status updates
@@ -36,6 +37,7 @@ Slack integration enables:
 You'll need these values:
 
 **From Basic Information:**
+
 - **App ID** - Unique identifier for your app
 - **Client ID** - OAuth client identifier
 - **Client Secret** - OAuth client secret (keep secure!)
@@ -87,6 +89,7 @@ You'll need these values:
 3. Copy the **Webhook URL**
 
 **Webhook URL format:**
+
 ```
 https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXX
 ```

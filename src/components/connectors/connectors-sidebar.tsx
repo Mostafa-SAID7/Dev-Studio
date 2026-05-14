@@ -19,8 +19,15 @@ interface ConnectorsSidebarProps {
   onDeleteConnector: (id: string) => void;
 }
 
-export function ConnectorsSidebar({ type, connectors, activeConnectorId, onSelectConnector, onNewConnector, onDeleteConnector }: ConnectorsSidebarProps) {
-  const typeConnectors = connectors.filter(c => c.type === type);
+export function ConnectorsSidebar({
+  type,
+  connectors,
+  activeConnectorId,
+  onSelectConnector,
+  onNewConnector,
+  onDeleteConnector,
+}: ConnectorsSidebarProps) {
+  const typeConnectors = connectors.filter((c) => c.type === type);
 
   return (
     <div className="p-6 h-full flex flex-col min-h-0">
@@ -38,10 +45,8 @@ export function ConnectorsSidebar({ type, connectors, activeConnectorId, onSelec
         </div>
       </div>
       <div className="flex items-center justify-between px-3 py-2">
-        <span className="text-xs font-medium text-muted-foreground">
-          Saved Contacts
-        </span>
-        <button 
+        <span className="text-xs font-medium text-muted-foreground">Saved Contacts</span>
+        <button
           onClick={onNewConnector}
           className="text-muted-foreground hover:text-primary transition-colors"
         >
@@ -50,18 +55,20 @@ export function ConnectorsSidebar({ type, connectors, activeConnectorId, onSelec
       </div>
       <nav className="space-y-1 overflow-y-auto flex-1 mt-2 pr-2 scrollbar-thin">
         {typeConnectors.length > 0 ? (
-          typeConnectors.map(connector => (
+          typeConnectors.map((connector) => (
             <div
               key={connector.id}
               className={`group relative w-full text-left px-3 py-2 rounded-md text-sm transition-colors cursor-pointer ${
-                activeConnectorId === connector.id 
-                  ? "bg-primary/10 text-primary" 
+                activeConnectorId === connector.id
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-card hover:text-foreground"
               }`}
               onClick={() => onSelectConnector(connector.id)}
             >
               <div className="pr-6">
-                <div className={`truncate ${activeConnectorId === connector.id ? "font-medium" : ""}`}>
+                <div
+                  className={`truncate ${activeConnectorId === connector.id ? "font-medium" : ""}`}
+                >
                   {connector.name || "Unnamed Contact"}
                 </div>
                 <div className="truncate text-xs text-muted-foreground mt-0.5">

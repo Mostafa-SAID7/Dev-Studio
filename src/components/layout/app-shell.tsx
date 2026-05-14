@@ -27,14 +27,44 @@ const WORKSPACE_NAV = [
 ] as const;
 
 const COMMUNICATION_NAV = [
-  { to: "/social", label: "Social Media", icon: ComponentIcon, match: ["/social"], search: { tab: "linkedin" } },
-  { to: "/mails", label: "Mails & Messaging", icon: Bot, match: ["/mails"], search: { tab: "cover-letter" } },
-  { to: "/connectors", label: "Connectors", icon: Users, match: ["/connectors"], search: { tab: "companies" } },
+  {
+    to: "/social",
+    label: "Social Media",
+    icon: ComponentIcon,
+    match: ["/social"],
+    search: { tab: "linkedin" },
+  },
+  {
+    to: "/mails",
+    label: "Mails & Messaging",
+    icon: Bot,
+    match: ["/mails"],
+    search: { tab: "cover-letter" },
+  },
+  {
+    to: "/connectors",
+    label: "Connectors",
+    icon: Users,
+    match: ["/connectors"],
+    search: { tab: "companies" },
+  },
 ] as const;
 
 const SKILLS_NAV = [
-  { to: "/tech-skills", label: "Tech Skills", icon: Code, match: ["/tech-skills"], search: { tab: "frontend" } },
-  { to: "/soft-skills", label: "Soft Skills", icon: Heart, match: ["/soft-skills"], search: { tab: "communication" } },
+  {
+    to: "/tech-skills",
+    label: "Tech Skills",
+    icon: Code,
+    match: ["/tech-skills"],
+    search: { tab: "frontend" },
+  },
+  {
+    to: "/soft-skills",
+    label: "Soft Skills",
+    icon: Heart,
+    match: ["/soft-skills"],
+    search: { tab: "communication" },
+  },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -206,8 +236,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             onClick={() => setPaletteOpen(true)}
             className="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 text-xs rounded-md bg-card hover:bg-sidebar-accent/50 transition-colors text-muted-foreground"
           >
-            <span className="flex items-center gap-2"><Search className="size-3.5" /> Quick search</span>
-            <kbd className="font-mono bg-muted text-muted-foreground px-1.5 py-0.5 rounded border border-border text-[10px]">⌘K</kbd>
+            <span className="flex items-center gap-2">
+              <Search className="size-3.5" /> Quick search
+            </span>
+            <kbd className="font-mono bg-muted text-muted-foreground px-1.5 py-0.5 rounded border border-border text-[10px]">
+              ⌘K
+            </kbd>
           </button>
           <UserMenu />
         </div>

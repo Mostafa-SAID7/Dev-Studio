@@ -10,10 +10,11 @@ export function AuthGate() {
   const { isReady, user } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const router = useRouter();
-  
+
   // Handle trailing slashes and nested public routes robustly
-  const isPublic = PUBLIC_ROUTES.some(r => 
-    pathname === r || pathname.startsWith(r + "/") || (r === "/auth" && pathname === "/auth/")
+  const isPublic = PUBLIC_ROUTES.some(
+    (r) =>
+      pathname === r || pathname.startsWith(r + "/") || (r === "/auth" && pathname === "/auth/"),
   );
 
   const [loadingTime, setLoadingTime] = useState(0);
@@ -22,7 +23,7 @@ export function AuthGate() {
     console.log("[AuthGate] State changed:", { isReady, user: !!user, isPublic, pathname });
     if (isReady && !user && !isPublic) {
       console.log("[AuthGate] User not authenticated on protected route. Redirecting to /auth");
-      router.navigate({ to: "/auth", replace: true }).catch(err => {
+      router.navigate({ to: "/auth", replace: true }).catch((err) => {
         console.error("[AuthGate] Navigation to /auth failed:", err);
       });
     }
@@ -31,7 +32,7 @@ export function AuthGate() {
   useEffect(() => {
     if (!isReady) {
       const interval = setInterval(() => {
-        setLoadingTime(t => {
+        setLoadingTime((t) => {
           if (t === 2) console.warn("[AuthGate] isReady is still false after 3 seconds!");
           return t + 1;
         });
@@ -49,10 +50,11 @@ export function AuthGate() {
             <p className="font-bold mb-2">Authentication is taking longer than expected.</p>
             <p>Please check your browser console for errors.</p>
             <p className="mt-2 text-xs opacity-70">
-              Supabase URL configured: {import.meta.env.VITE_SUPABASE_URL ? "Yes" : "No"} <br/>
-              Supabase Key configured: {import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ? "Yes" : "No"}
+              Supabase URL configured: {import.meta.env.VITE_SUPABASE_URL ? "Yes" : "No"} <br />
+              Supabase Key configured:{" "}
+              {import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ? "Yes" : "No"}
             </p>
-            <button 
+            <button
               className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md"
               onClick={() => window.location.reload()}
             >

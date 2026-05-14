@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  BookOpen,
-  CheckSquare,
-  ExternalLink,
-  GraduationCap,
-  ChevronRight,
-} from "lucide-react";
+import { BookOpen, CheckSquare, ExternalLink, GraduationCap, ChevronRight } from "lucide-react";
 import type { SkillAreaData } from "@/types/skills";
 import { OverviewSection } from "./overview-section";
 import { ChecklistSection } from "./checklist-section";
@@ -23,10 +17,16 @@ const SECTIONS: { id: SectionId; label: string; icon: any }[] = [
 
 import { SplitLayout } from "../layout";
 
-export function SkillArea({ data, activeSubArea }: { data: SkillAreaData; activeSubArea?: string }) {
+export function SkillArea({
+  data,
+  activeSubArea,
+}: {
+  data: SkillAreaData;
+  activeSubArea?: string;
+}) {
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [internalSubArea, setInternalSubArea] = useState<string>(data.subAreas?.[0]?.id || "");
-  
+
   const subArea = activeSubArea || internalSubArea;
   const setSubArea = (id: string) => setInternalSubArea(id);
 
@@ -112,9 +112,7 @@ export function SkillArea({ data, activeSubArea }: { data: SkillAreaData; active
           )}
           {activeSection === "checklist" && <ChecklistSection data={data} />}
           {activeSection === "interview" && <InterviewSection data={data} />}
-          {activeSection === "resources" && (
-            <ResourcesSection data={data} subArea={subArea} />
-          )}
+          {activeSection === "resources" && <ResourcesSection data={data} subArea={subArea} />}
         </div>
       </div>
     </SplitLayout>

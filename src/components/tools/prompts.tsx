@@ -10,7 +10,8 @@ import { SplitLayout } from "../layout";
 export function Prompts({ selectedId }: { selectedId?: string }) {
   const navigate = useNavigate();
   const search = useSearch({ from: "/tools" });
-  const { prompts, upsertPrompt, deletePrompt, toggleFavoritePrompt, incrementPromptUsage } = useForge();
+  const { prompts, upsertPrompt, deletePrompt, toggleFavoritePrompt, incrementPromptUsage } =
+    useForge();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("All");
   const [varValues, setVarValues] = useState<Record<string, string>>({});
@@ -65,7 +66,9 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
       updatedAt: Date.now(),
     };
     if (patch.body !== undefined) {
-      const vars = Array.from(new Set([...patch.body.matchAll(/\{\{\s*(\w+)\s*\}\}/g)].map((m) => m[1])));
+      const vars = Array.from(
+        new Set([...patch.body.matchAll(/\{\{\s*(\w+)\s*\}\}/g)].map((m) => m[1])),
+      );
       next.variables = vars;
     }
     upsertPrompt(next);
@@ -124,13 +127,17 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
                   active ? "bg-card" : "hover:bg-card/50"
                 }`}
               >
-                {active ? <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" /> : null}
+                {active ? (
+                  <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
+                ) : null}
                 <div className="flex items-center gap-2 mb-1">
                   <span className="px-1.5 py-0.5 rounded bg-muted text-[9px] font-mono uppercase tracking-wider text-muted-foreground">
                     {p.category}
                   </span>
                   {p.favorite ? <Star className="size-3 text-accent fill-accent" /> : null}
-                  <span className="text-[10px] text-muted-foreground font-mono ml-auto">{p.usageCount}×</span>
+                  <span className="text-[10px] text-muted-foreground font-mono ml-auto">
+                    {p.usageCount}×
+                  </span>
                 </div>
                 <p className="text-sm font-medium leading-snug mb-1 truncate">{p.title}</p>
                 <p className="text-xs text-muted-foreground line-clamp-2">{p.description}</p>
@@ -170,7 +177,9 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
                   className="p-2 rounded-md border border-border hover:bg-card"
                   title="Favorite"
                 >
-                  <Star className={`size-4 ${selected.favorite ? "fill-accent text-accent" : "text-muted-foreground"}`} />
+                  <Star
+                    className={`size-4 ${selected.favorite ? "fill-accent text-accent" : "text-muted-foreground"}`}
+                  />
                 </button>
                 <button
                   onClick={() => {
@@ -204,7 +213,14 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
               <Field label="Tags">
                 <Input
                   value={selected.tags.join(", ")}
-                  onChange={(e) => updateSelected({ tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean) })}
+                  onChange={(e) =>
+                    updateSelected({
+                      tags: e.target.value
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean),
+                    })
+                  }
                   className="font-mono"
                 />
               </Field>
@@ -286,8 +302,13 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
                 </h3>
                 <ul className="space-y-2">
                   {selected.versions.map((v) => (
-                    <li key={v.id} className="flex items-center justify-between text-xs p-2.5 rounded-md bg-background border border-border">
-                      <span className="font-mono text-muted-foreground">{new Date(v.createdAt).toLocaleString()}</span>
+                    <li
+                      key={v.id}
+                      className="flex items-center justify-between text-xs p-2.5 rounded-md bg-background border border-border"
+                    >
+                      <span className="font-mono text-muted-foreground">
+                        {new Date(v.createdAt).toLocaleString()}
+                      </span>
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(v.body);
@@ -309,7 +330,10 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
           <div>
             <Sparkles className="size-10 text-muted-foreground mx-auto mb-3" />
             <p className="text-sm text-muted-foreground mb-3">No prompt selected.</p>
-            <button onClick={create} className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md">
+            <button
+              onClick={create}
+              className="text-xs font-mono uppercase tracking-wider border border-border px-3 py-2 rounded-md"
+            >
               Create your first prompt
             </button>
           </div>
