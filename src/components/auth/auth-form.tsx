@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,19 +7,19 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 
 export function AuthForm() {
-  const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -29,13 +28,18 @@ export function AuthForm() {
           },
         });
         if (error) throw error;
-        toast.success("Account created. You're signed in.");
+
+        if (!data.session) {
+          setEmailSent(true);
+          toast.success("Account created — check your email to confirm before signing in.");
+        } else {
+          toast.success("Account created. You're signed in.");
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back.");
       }
-      navigate({ to: "/" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -51,6 +55,29 @@ export function AuthForm() {
     if (error) toast.error(error.message);
     else toast.success("Password reset email sent");
   };
+
+  if (emailSent) {
+    return (
+      <div className="rounded-lg border border-border bg-card p-6 space-y-4 shadow-sm text-center">
+        <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+          <svg className="size-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h2 className="font-semibold text-sm">Check your email</h2>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account, then come back to sign in.
+        </p>
+        <button
+          type="button"
+          onClick={() => { setEmailSent(false); setMode("signin"); }}
+          className="w-full inline-flex items-center justify-center bg-primary text-primary-foreground text-sm font-medium px-3 py-2.5 rounded-md hover:opacity-90 transition-all"
+        >
+          Back to sign in
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-lg border border-border bg-card p-6 space-y-5 shadow-sm">
@@ -78,6 +105,7 @@ export function AuthForm() {
               Display name
             </label>
             <Input
+              autoComplete="name"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               className="w-full"
@@ -92,6 +120,7 @@ export function AuthForm() {
           <Input
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full"
@@ -105,6 +134,7 @@ export function AuthForm() {
           <PasswordInput
             required
             minLength={6}
+            autoComplete={mode === "signup" ? "new-password" : "current-password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full"

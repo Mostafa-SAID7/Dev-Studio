@@ -59,6 +59,7 @@ interface ForgeState {
   deleteInterviewQuestion: (id: string) => Promise<void>;
   toggleFavoriteInterviewQuestion: (id: string) => Promise<void>;
   seedIfEmpty: () => Promise<void>;
+  reset: () => void;
 }
 
 export const useForge = create<ForgeState>()(
@@ -701,6 +702,23 @@ export const useForge = create<ForgeState>()(
         } catch (e) {
           console.error("Seeding error:", e);
         }
+      },
+
+      reset: () => {
+        set({
+          prompts: [],
+          agents: [],
+          components: [],
+          templates: [],
+          snippets: [],
+          interviewQuestions: [],
+          connectors: [],
+          socialDrafts: [],
+          mailTemplates: [],
+          userProgress: {},
+          isLoading: false,
+          initialized: false,
+        });
       },
     }),
     { name: "forgedev-store-supabase-v2" },

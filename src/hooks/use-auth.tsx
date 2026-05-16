@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { Session, User } from "@supabase/supabase-js";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 interface AuthContextValue {
@@ -14,43 +14,41 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const isReadyRef = useRef(false);
+
+  const markReady = () => {
+    if (!isReadyRef.current) {
+      isReadyRef.current = true;
+      setIsReady(true);
+    }
+  };
 
   useEffect(() => {
-    let subscription: { unsubscribe: () => void } | undefined;
+    const failsafe = setTimeout(() => {
+      console.warn("[Auth] Initialization timed out – forcing ready.");
+      markReady();
+    }, 3000);
 
-    // Failsafe: Force isReady to true after 2 seconds to prevent infinite loading
-    const timeoutId = setTimeout(() => {
-      console.warn("Auth initialization timed out. Forcing isReady to true.");
-      setIsReady(true);
-    }, 2000);
-
-    try {
-      const { data } = supabase.auth.onAuthStateChange((_event, s) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event: AuthChangeEvent, s: Session | null) => {
         setSession(s);
-      });
-      subscription = data.subscription;
 
-      supabase.auth
-        .getSession()
-        .then(({ data: { session: s } }) => {
-          setSession(s);
-          setIsReady(true);
-          clearTimeout(timeoutId);
-        })
-        .catch((err) => {
-          console.error("Auth session error:", err);
-          setIsReady(true);
-          clearTimeout(timeoutId);
-        });
-    } catch (err) {
-      console.error("Auth initialization error:", err);
-      setIsReady(true);
-      clearTimeout(timeoutId);
-    }
+        if (event === "INITIAL_SESSION" || event === "SIGNED_IN" || event === "SIGNED_OUT") {
+          clearTimeout(failsafe);
+          markReady();
+        }
+
+        if (event === "SIGNED_OUT") {
+          import("@/lib/store").then(({ useForge }) => {
+            useForge.getState().reset();
+          });
+        }
+      },
+    );
 
     return () => {
-      clearTimeout(timeoutId);
-      if (subscription) subscription.unsubscribe();
+      clearTimeout(failsafe);
+      subscription.unsubscribe();
     };
   }, []);
 
