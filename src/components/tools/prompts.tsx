@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, fillVariables, newId } from "@/lib/store";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import { Sparkles, Star, Copy, Plus, Trash2, History, Wand2, Search } from "lucide-react";
 import { toast } from "sonner";
 import type { Prompt } from "@/types/tools";
@@ -36,6 +38,7 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
       )
       .sort((a, b) => b.updatedAt - a.updatedAt);
   }, [prompts, query, category]);
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(filtered, 15);
 
   const selected = selectedId ? prompts.find((p) => p.id === selectedId) : filtered[0];
 
@@ -139,8 +142,8 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
         </div>
       </div>
 
-      <ul className="flex-1 overflow-y-auto scrollbar-thin p-2 space-y-0.5">
-        {filtered.map((p) => {
+      <ul className="overflow-y-auto scrollbar-thin p-2 space-y-0.5">
+        {paged.map((p) => {
           const active = selected?.id === p.id;
           return (
             <li key={p.id}>
@@ -175,8 +178,10 @@ export function Prompts({ selectedId }: { selectedId?: string }) {
           <li className="p-8 text-center text-xs text-muted-foreground italic">
             No prompts found.
           </li>
+
         ) : null}
       </ul>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 

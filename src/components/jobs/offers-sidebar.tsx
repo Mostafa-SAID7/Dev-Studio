@@ -1,4 +1,6 @@
 import { Plus, Handshake } from "lucide-react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import type { FreelanceOffer } from "./types";
 import { STATUS_COLORS, PLATFORM_COLORS } from "./types";
 
@@ -14,6 +16,7 @@ const statusLabel: Record<string, string> = {
 };
 
 export function OffersSidebar({ offers, activeId, onSelect, onAdd }: Props) {
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(offers, 20);
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="p-3 border-b border-border flex items-center justify-between shrink-0">
@@ -37,7 +40,7 @@ export function OffersSidebar({ offers, activeId, onSelect, onAdd }: Props) {
           </div>
         )}
         <ul className="space-y-0.5">
-          {offers.map((offer) => (
+          {paged.map((offer) => (
             <li key={offer.id}>
               <button
                 onClick={() => onSelect(offer.id)}
@@ -69,6 +72,7 @@ export function OffersSidebar({ offers, activeId, onSelect, onAdd }: Props) {
           ))}
         </ul>
       </div>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 }

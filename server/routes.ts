@@ -12,9 +12,15 @@ import jobRoutes from "./routes/api/jobs.js";
 import offerRoutes from "./routes/api/offers.js";
 import serviceRoutes from "./routes/api/services.js";
 import profileRoutes from "./routes/api/profile.js";
+import chatRoutes from "./routes/api/chat.js";
+import authRoutes from "./routes/api/auth.js";
 
 export function registerRoutes(app: Express) {
+  // --- Auth ---
+  app.use("/api/auth", authRoutes);
+
   // --- Standard API Routes ---
+  app.use("/api/chat", chatRoutes);
   app.use("/api/prompts", promptRoutes);
   app.use("/api/agents", agentRoutes);
   app.use("/api/components", componentRoutes);

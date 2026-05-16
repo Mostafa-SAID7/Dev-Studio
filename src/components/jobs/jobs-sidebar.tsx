@@ -1,4 +1,6 @@
 import { Plus, Briefcase } from "lucide-react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import type { SavedJob } from "./types";
 import { STATUS_COLORS, JOB_STATUSES } from "./types";
 
@@ -10,8 +12,9 @@ interface Props {
 }
 
 export function JobsSidebar({ jobs, activeId, onSelect, onAdd }: Props) {
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(jobs, 20);
   const grouped = JOB_STATUSES.reduce<Record<string, SavedJob[]>>((acc, s) => {
-    acc[s] = jobs.filter((j) => j.status === s);
+    acc[s] = paged.filter((j) => j.status === s);
     return acc;
   }, {} as any);
 
@@ -37,7 +40,7 @@ export function JobsSidebar({ jobs, activeId, onSelect, onAdd }: Props) {
           <Plus className="size-3.5" />
         </button>
       </div>
-      <div className="flex-1 overflow-y-auto p-2 space-y-3">
+      <div className="overflow-y-auto p-2 space-y-3">
         {jobs.length === 0 && (
           <div className="flex flex-col items-center justify-center py-12 gap-2 text-center px-4">
             <Briefcase className="size-8 text-muted-foreground/40" />
@@ -84,6 +87,7 @@ export function JobsSidebar({ jobs, activeId, onSelect, onAdd }: Props) {
           );
         })}
       </div>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 }

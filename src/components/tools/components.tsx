@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, newId } from "@/lib/store";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   Component as ComponentIcon,
   Plus,
@@ -35,6 +37,7 @@ export function Components({ selectedId }: { selectedId?: string }) {
     () => components.filter((c) => c.name.toLowerCase().includes(query.toLowerCase())),
     [components, query],
   );
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(filtered, 15);
   const selected = selectedId ? components.find((c) => c.id === selectedId) : filtered[0];
 
   const select = (cid: string) => navigate({ search: (prev) => ({ ...prev, id: cid }) });
@@ -100,7 +103,7 @@ export function Components({ selectedId }: { selectedId?: string }) {
       </div>
 
       <ul className="flex-1 overflow-y-auto scrollbar-thin p-2 space-y-0.5">
-        {filtered.map((c) => {
+        {paged.map((c) => {
           const active = selected?.id === c.id;
           return (
             <li key={c.id}>
@@ -134,6 +137,7 @@ export function Components({ selectedId }: { selectedId?: string }) {
           </li>
         ) : null}
       </ul>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 

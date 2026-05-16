@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 
-export interface ReplitUser {
+export interface AuthUser {
   id: string;
   name: string;
-  profileImage?: string;
-  email?: string;
+  email?: string | null;
+  profileImage?: string | null;
+  displayName?: string | null;
+  avatarUrl?: string | null;
 }
 
 export interface UserProfile {
@@ -14,11 +16,12 @@ export interface UserProfile {
 }
 
 interface AuthContextValue {
-  user: ReplitUser | null;
+  user: AuthUser | null;
   profile: UserProfile;
   isReady: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  refresh: () => Promise<void>;
 }
 
 const defaultProfile: UserProfile = { displayName: null, avatarUrl: null, location: null };
@@ -26,13 +29,13 @@ const defaultProfile: UserProfile = { displayName: null, avatarUrl: null, locati
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<ReplitUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [isReady, setIsReady] = useState(false);
 
   const fetchProfile = useCallback(async () => {
     try {
-      const r = await fetch("/api/profile");
+      const r = await fetch("/api/profile", { credentials: "include" });
       if (r.ok) {
         const data = await r.json();
         setProfile({
@@ -44,28 +47,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {}
   }, []);
 
-  useEffect(() => {
-    fetch("/api/auth/user")
-      .then((r) => (r.ok ? r.json() : null))
-      .then(async (u) => {
-        setUser(u);
-        if (u) await fetchProfile();
-        setIsReady(true);
-      })
-      .catch(() => {
+  const fetchUser = useCallback(async () => {
+    try {
+      const r = await fetch("/api/auth/user", { credentials: "include" });
+      if (r.ok) {
+        const u = await r.json();
+        setUser({
+          id: u.id,
+          name: u.displayName ?? u.name ?? u.email ?? "User",
+          email: u.email ?? null,
+          profileImage: u.avatarUrl ?? u.profileImage ?? null,
+          displayName: u.displayName ?? null,
+          avatarUrl: u.avatarUrl ?? null,
+        });
+        await fetchProfile();
+      } else {
         setUser(null);
-        setIsReady(true);
-      });
+      }
+    } catch {
+      setUser(null);
+    } finally {
+      setIsReady(true);
+    }
   }, [fetchProfile]);
 
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   const signOut = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setUser(null);
     setProfile(defaultProfile);
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, isReady, signOut, refreshProfile: fetchProfile }}>
+    <AuthContext.Provider value={{
+      user,
+      profile,
+      isReady,
+      signOut,
+      refreshProfile: fetchProfile,
+      refresh: fetchUser,
+    }}>
       {children}
     </AuthContext.Provider>
   );

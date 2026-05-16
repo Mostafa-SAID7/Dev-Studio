@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, newId } from "@/lib/store";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import { Scissors, Plus, Trash2, Search, Copy } from "lucide-react";
 import { toast } from "sonner";
 import type { Snippet } from "@/types/tools";
@@ -19,6 +21,7 @@ export function Snippets({ selectedId }: { selectedId?: string }) {
     () => snippets.filter((s) => s.title.toLowerCase().includes(query.toLowerCase())),
     [snippets, query],
   );
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(filtered, 15);
   const selected = selectedId ? snippets.find((s) => s.id === selectedId) : filtered[0];
 
   const select = (sid: string) => navigate({ search: (prev) => ({ ...prev, id: sid }) });
@@ -82,7 +85,7 @@ export function Snippets({ selectedId }: { selectedId?: string }) {
       </div>
 
       <ul className="flex-1 overflow-y-auto scrollbar-thin p-2 space-y-0.5">
-        {filtered.map((s) => {
+        {paged.map((s) => {
           const active = selected?.id === s.id;
           return (
             <li key={s.id}>
@@ -116,6 +119,7 @@ export function Snippets({ selectedId }: { selectedId?: string }) {
           </li>
         ) : null}
       </ul>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 

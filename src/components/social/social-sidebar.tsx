@@ -1,5 +1,7 @@
 import { Linkedin, Twitter, Instagram, Plus, Trash2, Search } from "lucide-react";
 import { useState } from "react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import type { SocialDraft } from "@/types/tools";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
@@ -27,6 +29,7 @@ export function SocialSidebar({
     d.platform === platform &&
     (d.content?.toLowerCase() || "").includes(searchQuery.toLowerCase())
   );
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(platformDrafts, 15);
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -65,9 +68,9 @@ export function SocialSidebar({
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin">
+      <nav className="overflow-y-auto p-2 space-y-1 scrollbar-thin">
         {platformDrafts.length > 0 ? (
-          platformDrafts.map((draft) => (
+          paged.map((draft) => (
             <div
               key={draft.id}
               className={`group relative w-full text-left px-3 py-2.5 rounded-md text-sm transition-all cursor-pointer border ${
@@ -107,6 +110,7 @@ export function SocialSidebar({
           </div>
         )}
       </nav>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
 
       <ConfirmDialog
         open={pendingDeleteId !== null}
