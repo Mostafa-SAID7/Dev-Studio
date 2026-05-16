@@ -1,4 +1,6 @@
 import { useState, useMemo } from "react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   Search,
   ChevronRight,
@@ -46,6 +48,7 @@ export function QuestionList() {
       return matchesSearch && matchesDifficulty && matchesDomain;
     });
   }, [interviewQuestions, search, difficulty, domain]);
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(filtered, 10);
 
   const handleAdd = () => {
     setEditingQ(null);
@@ -134,7 +137,7 @@ export function QuestionList() {
                 {filtered.length} Questions Found
               </h3>
             </div>
-            {filtered.map((q) => (
+            {paged.map((q) => (
               <article
                 key={q.id}
                 className="group rounded-xl border border-border bg-card hover:border-primary/30 transition-all hover:shadow-sm overflow-hidden"
@@ -189,6 +192,7 @@ export function QuestionList() {
                 </button>
               </div>
             )}
+            <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} className="mt-4" />
           </div>
         </div>
       </SplitLayout>

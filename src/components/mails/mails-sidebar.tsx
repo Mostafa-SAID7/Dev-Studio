@@ -1,5 +1,7 @@
 import { Mail, MessageCircle, FileText, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import type { MailTemplate } from "@/types/tools";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
@@ -22,6 +24,7 @@ export function MailsSidebar({
 }: MailsSidebarProps) {
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const channelTemplates = templates.filter((t) => t.channel === channel);
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(channelTemplates, 15);
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -49,9 +52,9 @@ export function MailsSidebar({
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin">
+      <nav className="overflow-y-auto p-2 space-y-1 scrollbar-thin">
         {channelTemplates.length > 0 ? (
-          channelTemplates.map((template) => (
+          paged.map((template) => (
             <div
               key={template.id}
               className={`group relative w-full text-left px-3 py-2.5 rounded-md text-sm transition-all cursor-pointer border ${
@@ -94,6 +97,7 @@ export function MailsSidebar({
           </div>
         )}
       </nav>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
 
       <ConfirmDialog
         open={pendingDeleteId !== null}

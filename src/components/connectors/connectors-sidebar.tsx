@@ -1,5 +1,7 @@
 import { Users, Building2, Briefcase, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import type { Connector } from "@/types/tools";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
@@ -22,6 +24,7 @@ export function ConnectorsSidebar({
 }: ConnectorsSidebarProps) {
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const typeConnectors = connectors.filter((c) => c.type === type);
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(typeConnectors, 15);
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -49,9 +52,9 @@ export function ConnectorsSidebar({
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin">
+      <nav className="overflow-y-auto p-2 space-y-1 scrollbar-thin">
         {typeConnectors.length > 0 ? (
-          typeConnectors.map((connector) => (
+          paged.map((connector) => (
             <div
               key={connector.id}
               className={`group relative w-full text-left px-3 py-2.5 rounded-md text-sm transition-all cursor-pointer border ${
@@ -94,6 +97,7 @@ export function ConnectorsSidebar({
           </div>
         )}
       </nav>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
 
       <ConfirmDialog
         open={pendingDeleteId !== null}

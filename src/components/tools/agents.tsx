@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, newId } from "@/lib/store";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import { Bot, Plus, Trash2, Play, Search } from "lucide-react";
 import { toast } from "sonner";
 import type { Agent } from "@/types/tools";
@@ -26,6 +28,7 @@ export function Agents({ selectedId }: { selectedId?: string }) {
     () => agents.filter((a) => a.name.toLowerCase().includes(query.toLowerCase())),
     [agents, query],
   );
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(filtered, 15);
   const selected = selectedId ? agents.find((a) => a.id === selectedId) : filtered[0];
 
   const select = (aid: string) => navigate({ search: (prev) => ({ ...prev, id: aid }) });
@@ -93,7 +96,7 @@ export function Agents({ selectedId }: { selectedId?: string }) {
       </div>
 
       <ul className="flex-1 overflow-y-auto scrollbar-thin p-2 space-y-0.5">
-        {filtered.map((a) => {
+        {paged.map((a) => {
           const active = selected?.id === a.id;
           return (
             <li key={a.id}>
@@ -125,6 +128,7 @@ export function Agents({ selectedId }: { selectedId?: string }) {
           </li>
         ) : null}
       </ul>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 

@@ -1,4 +1,6 @@
 import { Plus, Star } from "lucide-react";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import type { MyService } from "./types";
 import { STATUS_COLORS, PLATFORM_COLORS } from "./types";
 
@@ -14,6 +16,7 @@ const statusLabel: Record<string, string> = {
 };
 
 export function ServicesSidebar({ services, activeId, onSelect, onAdd }: Props) {
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(services, 20);
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="p-3 border-b border-border flex items-center justify-between shrink-0">
@@ -37,7 +40,7 @@ export function ServicesSidebar({ services, activeId, onSelect, onAdd }: Props) 
           </div>
         )}
         <ul className="space-y-0.5">
-          {services.map((svc) => (
+          {paged.map((svc) => (
             <li key={svc.id}>
               <button
                 onClick={() => onSelect(svc.id)}
@@ -69,6 +72,7 @@ export function ServicesSidebar({ services, activeId, onSelect, onAdd }: Props) 
           ))}
         </ul>
       </div>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 }

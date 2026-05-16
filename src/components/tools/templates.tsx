@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useForge, newId } from "@/lib/store";
+import { usePagination } from "@/hooks/use-pagination";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   LayoutTemplate,
   Plus,
@@ -27,6 +29,7 @@ export function Templates({ selectedId }: { selectedId?: string }) {
     () => templates.filter((t) => t.name.toLowerCase().includes(query.toLowerCase())),
     [templates, query],
   );
+  const { page, setPage, totalPages, paged, total, pageSize } = usePagination(filtered, 15);
   const selected = selectedId ? templates.find((t) => t.id === selectedId) : filtered[0];
 
   const select = (tid: string) => navigate({ search: (prev) => ({ ...prev, id: tid }) });
@@ -90,8 +93,8 @@ export function Templates({ selectedId }: { selectedId?: string }) {
         </div>
       </div>
 
-      <ul className="flex-1 overflow-y-auto scrollbar-thin p-2 space-y-0.5">
-        {filtered.map((t) => {
+      <ul className="overflow-y-auto scrollbar-thin p-2 space-y-0.5">
+        {paged.map((t) => {
           const active = selected?.id === t.id;
           return (
             <li key={t.id}>
@@ -129,6 +132,7 @@ export function Templates({ selectedId }: { selectedId?: string }) {
           </li>
         ) : null}
       </ul>
+      <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
     </div>
   );
 
