@@ -460,10 +460,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                         <ul className="p-2 space-y-1">
                           {notifications.map((n) => (
                             <li key={n.id}>
-                              <button
+                              <div
+                                role="button"
+                                tabIndex={0}
                                 onClick={() => readOne(n.id)}
+                                onKeyDown={(e) => e.key === "Enter" && readOne(n.id)}
                                 className={cn(
-                                  "w-full text-left flex items-start gap-3 px-3 py-2.5 rounded-xl transition-all group",
+                                  "w-full text-left flex items-start gap-3 px-3 py-2.5 rounded-xl transition-all group cursor-pointer",
                                   n.read ? "opacity-60 hover:opacity-100 hover:bg-muted/40" : "bg-primary/5 hover:bg-primary/10 ring-1 ring-primary/10"
                                 )}
                               >
@@ -489,7 +492,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                                 {!n.read && (
                                   <div className="size-1.5 rounded-full bg-primary shrink-0 mt-2" />
                                 )}
-                              </button>
+                              </div>
                             </li>
                           ))}
                         </ul>
