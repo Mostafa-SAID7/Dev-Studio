@@ -793,7 +793,7 @@ export const useForge = create<ForgeState>()(
         }
       },
     }),
-    { name: "forgedev-store-v2" },
+    { name: "forgedev-store-v3" },
   ),
 );
 

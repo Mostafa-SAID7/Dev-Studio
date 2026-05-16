@@ -22,8 +22,8 @@ export const Route = createFileRoute("/mails")({
 
 const MAIL_TABS = [
   { id: "cover-letter", label: "Cover Letters", icon: Send },
-  { id: "gmail", label: "Professional Emails", icon: Mail },
-  { id: "whatsapp", label: "Business Chat", icon: MessageCircle },
+  { id: "gmail", label: "Gmail", icon: Mail },
+  { id: "whatsapp", label: "WhatsApp", icon: MessageCircle },
 ];
 
 function MailsPage() {

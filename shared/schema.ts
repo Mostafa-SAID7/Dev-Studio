@@ -116,6 +116,14 @@ export const interviewQuestions = pgTable("interview_questions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const userProfiles = pgTable("user_profiles", {
+  userId: text("user_id").primaryKey(),
+  displayName: text("display_name"),
+  avatarUrl: text("avatar_url"),
+  location: text("location"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const userProgress = pgTable("user_progress", {
   userId: text("user_id").notNull(),
   itemId: text("item_id").notNull(),

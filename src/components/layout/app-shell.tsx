@@ -171,7 +171,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {!isCollapsed && (
             <div className="flex flex-col leading-tight overflow-hidden">
               <span className="font-semibold tracking-tight text-sm truncate">Dev Studio</span>
-              <span className="text-[10px] text-muted-foreground font-mono truncate">v0.2 · personal hub</span>
+              <span className="text-[10px] text-muted-foreground font-mono truncate">your dev hub</span>
             </div>
           )}
           <button

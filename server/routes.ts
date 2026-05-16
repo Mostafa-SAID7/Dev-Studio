@@ -2,7 +2,7 @@ import type { Express, Request, Response } from "express";
 import { db } from "./db.js";
 import {
   prompts, agents, components, templates, snippets,
-  connectors, socialDrafts, mailTemplates, interviewQuestions, userProgress
+  connectors, socialDrafts, mailTemplates, interviewQuestions, userProgress, userProfiles
 } from "../shared/schema.js";
 import { eq, and } from "drizzle-orm";
 
@@ -457,6 +457,31 @@ export function registerRoutes(app: Express) {
       res.json(r);
     } else {
       const [r] = await db.insert(userProgress).values({ userId: uid, itemId, areaId, completed }).returning();
+      res.json(r);
+    }
+  });
+
+  // --- USER PROFILE ---
+  app.get("/api/profile", async (req, res) => {
+    const uid = requireUser(req, res); if (!uid) return;
+    const rows = await db.select().from(userProfiles).where(eq(userProfiles.userId, uid));
+    res.json(rows[0] ?? null);
+  });
+
+  app.post("/api/profile", async (req, res) => {
+    const uid = requireUser(req, res); if (!uid) return;
+    const { displayName, avatarUrl, location } = req.body;
+    const existing = await db.select().from(userProfiles).where(eq(userProfiles.userId, uid));
+    if (existing.length > 0) {
+      const [r] = await db.update(userProfiles)
+        .set({ displayName, avatarUrl, location, updatedAt: new Date() })
+        .where(eq(userProfiles.userId, uid))
+        .returning();
+      res.json(r);
+    } else {
+      const [r] = await db.insert(userProfiles)
+        .values({ userId: uid, displayName, avatarUrl, location })
+        .returning();
       res.json(r);
     }
   });
