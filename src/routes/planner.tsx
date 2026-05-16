@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useCallback } from "react";
 import {
   CalendarDays, Plus, CheckCircle2, Circle, Clock,
-  LayoutGrid, Archive, ChevronLeft, ChevronRight, ListFilter,
+  LayoutGrid, Archive, ListFilter,
 } from "lucide-react";
 import { PlannerSidebar } from "@/components/planner/planner-sidebar";
 import { TaskCard } from "@/components/planner/task-card";
@@ -14,7 +14,8 @@ import { getPlannerTasks, upsertPlannerTask, deletePlannerTask } from "@/lib/api
 import type { PlannerTask, TaskStatus } from "@/types/planner";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useUIStore } from "@/lib/ui-store";
+import { SplitLayout } from "@/components/layout";
+import { PageContainer, PageSection } from "@/components/layout";
 
 export const Route = createFileRoute("/planner")({
   component: PlannerPage,
@@ -62,14 +63,14 @@ const STATUS_CYCLE: Record<TaskStatus, TaskStatus> = {
 const TABS: { id: Tab; label: string; icon: typeof CalendarDays }[] = [
   { id: "schedule", label: "Schedule", icon: CalendarDays },
   { id: "overview", label: "Overview", icon: LayoutGrid },
-  { id: "backlog", label: "Backlog", icon: Archive },
+  { id: "backlog",  label: "Backlog",  icon: Archive },
 ];
 
 const FILTERS: { id: FilterStatus; label: string }[] = [
-  { id: "all", label: "All" },
+  { id: "all",         label: "All"    },
   { id: "in-progress", label: "Active" },
-  { id: "todo", label: "Todo" },
-  { id: "done", label: "Done" },
+  { id: "todo",        label: "Todo"   },
+  { id: "done",        label: "Done"   },
 ];
 
 export default function PlannerPage() {
@@ -81,7 +82,6 @@ export default function PlannerPage() {
   const [editingTask, setEditingTask] = useState<PlannerTask | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
-  const { sidebarOpen, toggleSidebar } = useUIStore();
 
   const weekEnd = addDays(weekStart, 6);
 
@@ -161,57 +161,60 @@ export default function PlannerPage() {
     setShowAddForm(false);
   };
 
-  const dayTasks = tasks.filter((t) => t.date === selectedDate);
+  const dayTasks        = tasks.filter((t) => t.date === selectedDate);
   const inProgressTasks = dayTasks.filter((t) => t.status === "in-progress");
-  const todoTasks = dayTasks.filter((t) => t.status === "todo");
-  const doneTasks = dayTasks.filter((t) => t.status === "done");
+  const todoTasks       = dayTasks.filter((t) => t.status === "todo");
+  const doneTasks       = dayTasks.filter((t) => t.status === "done");
+  const backlogTasks    = tasks.filter((t) => !t.date || t.date === "");
 
   const allSortedTasks = [
     ...inProgressTasks.sort((a, b) => a.order - b.order),
     ...todoTasks.sort((a, b) => a.order - b.order),
     ...doneTasks.sort((a, b) => a.order - b.order),
   ];
-
   const filteredTasks = filterStatus === "all"
     ? allSortedTasks
     : allSortedTasks.filter((t) => t.status === filterStatus);
 
-  const doneCount = doneTasks.length;
-  const totalCount = dayTasks.length;
-  const completionPct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+  const totalCount     = dayTasks.length;
+  const doneCount      = doneTasks.length;
+  const completionPct  = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
-  const backlogTasks = tasks.filter((t) => !t.date || t.date === "");
+  /* ── Sidebar passed into SplitLayout ────────────────── */
+  const plannerSidebar = (
+    <PlannerSidebar
+      selectedDate={selectedDate}
+      weekStart={weekStart}
+      tasks={tasks}
+      onSelectDate={handleSelectDate}
+      onPrevWeek={handlePrevWeek}
+      onNextWeek={handleNextWeek}
+      onToday={handleToday}
+      onAddTask={() => { setTab("schedule"); setShowAddForm(true); }}
+    />
+  );
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden p-2 sm:p-3 gap-2 sm:gap-3">
+    <PageContainer>
 
-      {/* ── TOP: Full-width header card ──────────────────── */}
-      <div className="shrink-0 rounded-2xl border border-border/60 bg-card px-4 sm:px-5 py-3.5">
+      {/* ── Header card — identical pattern to all pages ── */}
+      <PageSection>
         <div className="flex items-center gap-3">
-          {/* Sidebar toggle */}
-          <button
-            onClick={toggleSidebar}
-            className="size-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors shrink-0 border border-border/40"
-            title={sidebarOpen ? "Hide calendar" : "Show calendar"}
-          >
-            {sidebarOpen ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
-          </button>
+          {/* Icon */}
+          <div className="size-9 sm:size-10 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
+            <CalendarDays className="size-[18px] sm:size-5 text-primary" />
+          </div>
 
-          {/* Icon + title */}
-          <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <div className="size-8 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
-              <CalendarDays className="size-4 text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h1 className="text-base sm:text-lg font-bold tracking-tight leading-tight">Planner</h1>
-              <p className="text-xs text-muted-foreground hidden sm:block truncate">
-                Schedule your day and get AI-powered suggestions
-              </p>
-            </div>
+          {/* Title */}
+          <div className="min-w-0">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/60 mb-0.5">
+              Workspace
+            </p>
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight leading-tight">Planner</h1>
           </div>
 
           {/* Tab nav */}
-          <nav className="hidden sm:flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/50">
+          <nav className="hidden sm:flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/50 ml-2">
             {TABS.map((t) => {
               const Icon = t.icon;
               const active = tab === t.id;
@@ -242,15 +245,15 @@ export default function PlannerPage() {
             })}
           </nav>
 
-          {/* Filter pills — schedule tab only */}
+          {/* Filter pills */}
           {tab === "schedule" && (
             <div className="hidden md:flex items-center gap-1 p-1 bg-muted/30 rounded-xl border border-border/40">
               <ListFilter className="size-3 text-muted-foreground ml-1 mr-0.5 shrink-0" />
               {FILTERS.map((f) => {
                 const count =
-                  f.id === "all" ? dayTasks.length :
+                  f.id === "all"         ? dayTasks.length :
                   f.id === "in-progress" ? inProgressTasks.length :
-                  f.id === "todo" ? todoTasks.length : doneTasks.length;
+                  f.id === "todo"        ? todoTasks.length : doneTasks.length;
                 return (
                   <button
                     key={f.id}
@@ -270,10 +273,10 @@ export default function PlannerPage() {
             </div>
           )}
 
-          {/* New Task button */}
+          {/* New Task */}
           <button
             onClick={() => { setTab("schedule"); setShowAddForm(true); }}
-            className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-3 py-2 rounded-xl hover:opacity-90 active:scale-[0.97] transition-all shadow-sm shrink-0"
+            className="ml-auto inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-3 py-2 rounded-xl hover:opacity-90 active:scale-[0.97] transition-all shadow-sm shrink-0"
           >
             <Plus className="size-3.5" />
             <span className="hidden sm:inline">New Task</span>
@@ -281,7 +284,7 @@ export default function PlannerPage() {
           </button>
         </div>
 
-        {/* Mobile tabs row */}
+        {/* Mobile tabs */}
         <div className="sm:hidden mt-3 flex items-center gap-2">
           <nav className="flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/50 flex-1">
             {TABS.map((t) => {
@@ -309,37 +312,13 @@ export default function PlannerPage() {
             })}
           </nav>
         </div>
-      </div>
+      </PageSection>
 
-      {/* ── BOTTOM: Sidebar + Content split ─────────────── */}
-      <div className="flex flex-1 min-h-0 gap-2 sm:gap-3">
+      {/* ── Split layout — same as every other page ──────── */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <SplitLayout sidebar={plannerSidebar} sidebarWidth="lg:w-[260px]">
 
-        {/* Sidebar panel */}
-        <aside
-          className={cn(
-            "rounded-2xl border border-border/60 bg-muted/20 flex flex-col shrink-0 overflow-hidden transition-all duration-300 ease-in-out",
-            sidebarOpen ? "opacity-100" : "w-0 opacity-0 border-transparent pointer-events-none"
-          )}
-          style={{ width: sidebarOpen ? "min(256px, 68vw)" : "0" }}
-        >
-          <div className="w-64 flex flex-col h-full overflow-hidden">
-            <PlannerSidebar
-              selectedDate={selectedDate}
-              weekStart={weekStart}
-              tasks={tasks}
-              onSelectDate={handleSelectDate}
-              onPrevWeek={handlePrevWeek}
-              onNextWeek={handleNextWeek}
-              onToday={handleToday}
-              onAddTask={() => { setTab("schedule"); setShowAddForm(true); }}
-            />
-          </div>
-        </aside>
-
-        {/* Main content panel */}
-        <div className="flex-1 flex flex-col min-w-0 rounded-2xl border border-border/60 bg-card overflow-hidden">
-
-          {/* SCHEDULE TAB */}
+          {/* ── SCHEDULE TAB ── */}
           {tab === "schedule" && (
             <div className="flex flex-col h-full overflow-hidden">
               {/* Day header */}
@@ -376,9 +355,9 @@ export default function PlannerPage() {
                       <ListFilter className="size-3 text-muted-foreground ml-1 mr-0.5 shrink-0" />
                       {FILTERS.map((f) => {
                         const count =
-                          f.id === "all" ? dayTasks.length :
+                          f.id === "all"         ? dayTasks.length :
                           f.id === "in-progress" ? inProgressTasks.length :
-                          f.id === "todo" ? todoTasks.length : doneTasks.length;
+                          f.id === "todo"        ? todoTasks.length : doneTasks.length;
                         return (
                           <button
                             key={f.id}
@@ -475,12 +454,12 @@ export default function PlannerPage() {
             </div>
           )}
 
-          {/* OVERVIEW TAB */}
+          {/* ── OVERVIEW TAB ── */}
           {tab === "overview" && (
             <OverviewPanel tasks={tasks} weekStart={weekStart} />
           )}
 
-          {/* BACKLOG TAB */}
+          {/* ── BACKLOG TAB ── */}
           {tab === "backlog" && (
             <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-5 py-4 space-y-3">
               <div className="flex items-center justify-between">
@@ -490,11 +469,7 @@ export default function PlannerPage() {
                 </div>
               </div>
 
-              <AddTaskForm
-                key="backlog-add"
-                date=""
-                onAdd={handleAddTask}
-              />
+              <AddTaskForm key="backlog-add" date="" onAdd={handleAddTask} />
 
               {backlogTasks.length === 0 ? (
                 <div className="py-16 text-center space-y-2">
@@ -515,7 +490,8 @@ export default function PlannerPage() {
               )}
             </div>
           )}
-        </div>
+
+        </SplitLayout>
       </div>
 
       <EditTaskDialog
@@ -523,6 +499,6 @@ export default function PlannerPage() {
         onSave={handleSaveEdit}
         onClose={() => setEditingTask(null)}
       />
-    </div>
+    </PageContainer>
   );
 }
