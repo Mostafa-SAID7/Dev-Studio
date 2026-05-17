@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   MapPin, RefreshCw, Clock, Dumbbell, Utensils,
   Sparkles, Plus, Check, ChevronDown, Flame, Bath,
-  Timer, AlertCircle, Activity,
+  Timer, AlertCircle, Activity, Moon,
   Coffee, Salad, Footprints, HeartPulse,
   Droplets, BedDouble, UtensilsCrossed,
   Trophy, LucideIcon,
