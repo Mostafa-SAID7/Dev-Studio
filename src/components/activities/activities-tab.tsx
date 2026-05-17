@@ -565,44 +565,49 @@ function DailyActivitiesPanel({ prayers }: { prayers: PrayerTime[] }) {
 
   return (
     <div className="space-y-4">
-      {/* Day summary bar */}
+      {/* Day summary bar — full width */}
       {allTotal > 0 && (
-        <div className="rounded-2xl border border-border/50 bg-muted/20 px-4 py-3 flex items-center gap-4">
-          <Activity className="size-4 text-muted-foreground shrink-0" />
-          <div className="flex-1">
+        <div className="rounded-2xl border border-border/50 bg-muted/20 px-5 py-3.5 flex items-center gap-4">
+          <div className="size-8 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
+            <Activity className="size-4 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold">Today's Activities</p>
             <p className="text-xs text-muted-foreground mt-0.5">{allDone} of {allTotal} completed</p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-24 h-2 rounded-full bg-muted overflow-hidden">
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="w-32 h-2 rounded-full bg-muted overflow-hidden">
               <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${pct}%` }} />
             </div>
-            <span className="text-sm font-bold text-primary w-10 text-right tabular-nums">{pct}%</span>
+            <span className="text-sm font-bold text-primary w-9 text-right tabular-nums">{pct}%</span>
           </div>
         </div>
       )}
 
-      <ActivitySection
-        icon={Utensils} title="Food & Nutrition"
-        color="text-amber-600" bgColor="bg-amber-500/5" borderColor="border-amber-500/20"
-        suggestions={suggestions.food} items={food} presets={PRESET_FOOD}
-        onToggle={makeToggle(food, setFood, "food")}
-        onAdd={makeAdd(food, setFood, "food")}
-      />
-      <ActivitySection
-        icon={Dumbbell} title="Training & Sports"
-        color="text-blue-600" bgColor="bg-blue-500/5" borderColor="border-blue-500/20"
-        suggestions={suggestions.training} items={training} presets={PRESET_TRAINING}
-        onToggle={makeToggle(training, setTraining, "training")}
-        onAdd={makeAdd(training, setTraining, "training")}
-      />
-      <ActivitySection
-        icon={Bath} title="Self-Care & Hygiene"
-        color="text-rose-600" bgColor="bg-rose-500/5" borderColor="border-rose-500/20"
-        suggestions={suggestions.selfCare} items={selfCare} presets={PRESET_SELFCARE}
-        onToggle={makeToggle(selfCare, setSelfCare, "selfcare")}
-        onAdd={makeAdd(selfCare, setSelfCare, "selfcare")}
-      />
+      {/* Responsive 3-column grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+        <ActivitySection
+          icon={Utensils} title="Food & Nutrition"
+          color="text-amber-600" bgColor="bg-amber-500/5" borderColor="border-amber-500/20"
+          suggestions={suggestions.food} items={food} presets={PRESET_FOOD}
+          onToggle={makeToggle(food, setFood, "food")}
+          onAdd={makeAdd(food, setFood, "food")}
+        />
+        <ActivitySection
+          icon={Dumbbell} title="Training & Sports"
+          color="text-blue-600" bgColor="bg-blue-500/5" borderColor="border-blue-500/20"
+          suggestions={suggestions.training} items={training} presets={PRESET_TRAINING}
+          onToggle={makeToggle(training, setTraining, "training")}
+          onAdd={makeAdd(training, setTraining, "training")}
+        />
+        <ActivitySection
+          icon={Bath} title="Self-Care & Hygiene"
+          color="text-rose-600" bgColor="bg-rose-500/5" borderColor="border-rose-500/20"
+          suggestions={suggestions.selfCare} items={selfCare} presets={PRESET_SELFCARE}
+          onToggle={makeToggle(selfCare, setSelfCare, "selfcare")}
+          onAdd={makeAdd(selfCare, setSelfCare, "selfcare")}
+        />
+      </div>
     </div>
   );
 }
@@ -646,11 +651,13 @@ export function ActivitiesTab() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-5 py-4">
-        <div className="max-w-2xl mx-auto">
-          {innerTab === "prayer" && <PrayerPanel key={dateStr} />}
-          {innerTab === "activities" && <DailyActivitiesPanel prayers={prayers} />}
-        </div>
+      <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-6 py-4">
+        {innerTab === "prayer" && (
+          <div className="max-w-lg mx-auto">
+            <PrayerPanel key={dateStr} />
+          </div>
+        )}
+        {innerTab === "activities" && <DailyActivitiesPanel prayers={prayers} />}
       </div>
     </div>
   );
