@@ -38,6 +38,7 @@ export function TaskCard({ task, onToggle, onDelete, onEdit, dragOverlay }: Task
   const isDone = task.status === "done";
   const isInProgress = task.status === "in-progress";
   const cfg = STATUS_CONFIG[task.status];
+  const CatIcon = CATEGORY_ICON_COMPONENTS[task.category];
 
   const {
     attributes,
@@ -113,15 +114,13 @@ export function TaskCard({ task, onToggle, onDelete, onEdit, dragOverlay }: Task
             {task.priority}
           </span>
 
-          {(({ Icon }: { Icon: React.ElementType }) => (
-            <span className={cn(
-              "text-[10px] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1",
-              CATEGORY_COLORS[task.category]
-            )}>
-              <Icon className="size-3" />
-              {CATEGORY_LABELS[task.category]}
-            </span>
-          ))({ Icon: CATEGORY_ICON_COMPONENTS[task.category] })}
+          <span className={cn(
+            "text-[10px] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1",
+            CATEGORY_COLORS[task.category]
+          )}>
+            <CatIcon className="size-3" />
+            {CATEGORY_LABELS[task.category]}
+          </span>
 
           {task.estimatedMinutes && (
             <span className="flex items-center gap-1 text-[10px] text-muted-foreground">

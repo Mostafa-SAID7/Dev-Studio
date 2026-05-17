@@ -24,6 +24,7 @@ import {
   CATEGORY_LABELS, CATEGORY_ICON_COMPONENTS, CATEGORY_SECTION_STYLES,
   DAILY_PARTS, getWeekTheme, normCategory,
 } from "@/types/planner";
+import { toDateStr, addDays } from "@/lib/planner-utils";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { SplitLayout } from "@/components/layout";
@@ -36,18 +37,12 @@ export const Route = createFileRoute("/planner")({
 
 type Tab = "schedule" | "overview" | "backlog" | "activities";
 
-function toDateStr(d: Date) { return d.toISOString().slice(0, 10); }
 function getWeekStart(d: Date) {
   const r = new Date(d);
   const day = r.getDay(); // 0=Sun … 6=Sat
   const diff = (day - 6 + 7) % 7; // days since last Saturday
   r.setDate(r.getDate() - diff);
   r.setHours(0, 0, 0, 0);
-  return r;
-}
-function addDays(d: Date, n: number) {
-  const r = new Date(d);
-  r.setDate(r.getDate() + n);
   return r;
 }
 function formatDayTitle(dateStr: string) {

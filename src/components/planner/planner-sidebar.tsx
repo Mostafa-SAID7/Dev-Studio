@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, CalendarDays, TrendingUp, ChevronDown } from
 import { cn } from "@/lib/utils";
 import type { PlannerTask } from "@/types/planner";
 import { WEEK_THEMES, getWeekTheme, CATEGORY_ICON_COMPONENTS, CATEGORY_LABELS } from "@/types/planner";
+import { toDateStr, addDays } from "@/lib/planner-utils";
 
 interface PlannerSidebarProps {
   selectedDate: string;
@@ -16,11 +17,6 @@ interface PlannerSidebarProps {
   onAddTask: () => void;
   weekTheme?: ReturnType<typeof getWeekTheme>;
   extraBottom?: ReactNode;
-}
-
-function toDateStr(d: Date): string { return d.toISOString().slice(0, 10); }
-function addDays(d: Date, n: number): Date {
-  const r = new Date(d); r.setDate(r.getDate() + n); return r;
 }
 
 const DAY_NAMES  = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];

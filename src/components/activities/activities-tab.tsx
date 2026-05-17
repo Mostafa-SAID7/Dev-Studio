@@ -1,24 +1,19 @@
-import { useState, useEffect, useCallback, useRef, type ElementType } from "react";
+import { useState } from "react";
 import {
-  Moon, MapPin, RefreshCw, Clock, Dumbbell, Utensils,
+  MapPin, RefreshCw, Clock, Dumbbell, Utensils,
   Sparkles, Plus, Check, ChevronDown, Flame, Bath,
-  Timer, AlertCircle, Sun, CloudSun, Sunset, Star,
-  Coffee, Salad, Activity, Footprints, HeartPulse,
-  Droplets, Leaf, BedDouble, UtensilsCrossed, Pill,
+  Timer, AlertCircle, Activity,
+  Coffee, Salad, Footprints, HeartPulse,
+  Droplets, BedDouble, UtensilsCrossed,
   Trophy, LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { usePrayerTimes, type PrayerTime } from "@/hooks/use-prayer-times";
+import { toDateStr, to24hMin, formatCountdown, formatTime12, formatMinutesLabel } from "@/lib/planner-utils";
 
 /* ── Types ─────────────────────────────────────────── */
-interface PrayerTime {
-  name: string;
-  arabicName: string;
-  time: string;
-  Icon: LucideIcon;
-}
-
 interface ActivityItem {
   id: string;
   title: string;
@@ -34,33 +29,6 @@ interface ActivitySuggestion {
 }
 
 type InnerTab = "prayer" | "activities";
-
-const PRAYER_KEYS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"] as const;
-const PRAYER_META: Record<string, { arabic: string; Icon: LucideIcon; color: string; iconColor: string }> = {
-  Fajr:    { arabic: "الفجر",  Icon: Star,    color: "text-indigo-400",  iconColor: "text-indigo-400"  },
-  Dhuhr:   { arabic: "الظهر",  Icon: Sun,     color: "text-amber-500",   iconColor: "text-amber-500"   },
-  Asr:     { arabic: "العصر",  Icon: CloudSun,color: "text-orange-400",  iconColor: "text-orange-400"  },
-  Maghrib: { arabic: "المغرب", Icon: Sunset,  color: "text-rose-400",    iconColor: "text-rose-400"    },
-  Isha:    { arabic: "العشاء", Icon: Moon,    color: "text-violet-400",  iconColor: "text-violet-400"  },
-};
-
-function to24hMin(time: string): number {
-  const [h, m] = time.split(":").map(Number);
-  return h * 60 + m;
-}
-function formatCountdown(diffMin: number): string {
-  if (diffMin <= 0) return "Now";
-  const h = Math.floor(diffMin / 60);
-  const m = diffMin % 60;
-  return h > 0 ? `${h}h ${m}m` : `${m}m`;
-}
-function formatTime12(time: string): string {
-  const [h, m] = time.split(":").map(Number);
-  const ampm = h >= 12 ? "PM" : "AM";
-  const h12  = h % 12 || 12;
-  return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
-}
-function toDateStr(d: Date) { return d.toISOString().slice(0, 10); }
 
 /* ── Activity suggestions ───────────────────────── */
 function getActivitySuggestions(prayers: PrayerTime[]): {
@@ -93,100 +61,30 @@ function getActivitySuggestions(prayers: PrayerTime[]): {
   const maghribMin = to24hMin(prayers.find((p) => p.name === "Maghrib")?.time ?? "18:30");
   const ishaMin    = to24hMin(prayers.find((p) => p.name === "Isha")?.time    ?? "20:00");
 
-  const fmt = (m: number) => {
-    const h   = Math.floor(m / 60) % 24;
-    const min = m % 60;
-    const ap  = h >= 12 ? "PM" : "AM";
-    const h12 = h % 12 || 12;
-    return `${h12}:${String(min).padStart(2, "0")} ${ap}`;
-  };
+  const f = formatMinutesLabel;
 
   return {
     food: [
-      { Icon: Coffee,          label: "Breakfast", bestTime: `${fmt(fajrMin + 20)} – ${fmt(fajrMin + 60)}`,      reason: "20–60 min after Fajr" },
-      { Icon: Salad,           label: "Lunch",     bestTime: `${fmt(dhuhrMin + 15)} – ${fmt(dhuhrMin + 75)}`,    reason: "After Dhuhr prayer" },
-      { Icon: UtensilsCrossed, label: "Dinner",    bestTime: `${fmt(maghribMin + 15)} – ${fmt(maghribMin + 75)}`,reason: "After Maghrib prayer" },
+      { Icon: Coffee,          label: "Breakfast", bestTime: `${f(fajrMin + 20)} – ${f(fajrMin + 60)}`,      reason: "20–60 min after Fajr" },
+      { Icon: Salad,           label: "Lunch",     bestTime: `${f(dhuhrMin + 15)} – ${f(dhuhrMin + 75)}`,    reason: "After Dhuhr prayer" },
+      { Icon: UtensilsCrossed, label: "Dinner",    bestTime: `${f(maghribMin + 15)} – ${f(maghribMin + 75)}`,reason: "After Maghrib prayer" },
     ],
     training: [
-      { Icon: Dumbbell,   label: "Strength training", bestTime: `${fmt(fajrMin + 70)} – ${fmt(dhuhrMin - 60)}`,    reason: "Post-breakfast energy peak" },
-      { Icon: Footprints, label: "Walk / cardio",     bestTime: `${fmt(asrMin + 20)} – ${fmt(maghribMin - 20)}`,   reason: "Asr → Maghrib window, cooler air" },
-      { Icon: HeartPulse, label: "Yoga / stretch",    bestTime: `${fmt(fajrMin + 5)} – ${fmt(fajrMin + 35)}`,      reason: "Right after Fajr, peaceful time" },
+      { Icon: Dumbbell,   label: "Strength training", bestTime: `${f(fajrMin + 70)} – ${f(dhuhrMin - 60)}`,    reason: "Post-breakfast energy peak" },
+      { Icon: Footprints, label: "Walk / cardio",     bestTime: `${f(asrMin + 20)} – ${f(maghribMin - 20)}`,   reason: "Asr → Maghrib window, cooler air" },
+      { Icon: HeartPulse, label: "Yoga / stretch",    bestTime: `${f(fajrMin + 5)} – ${f(fajrMin + 35)}`,      reason: "Right after Fajr, peaceful time" },
     ],
     selfCare: [
-      { Icon: Sparkles, label: "Morning grooming", bestTime: `${fmt(fajrMin - 20)} – ${fmt(fajrMin)}`,          reason: "Before Fajr, fresh start" },
-      { Icon: Droplets, label: "Shower / bath",    bestTime: `${fmt(maghribMin + 20)} – ${fmt(maghribMin + 50)}`,reason: "After Maghrib, relax" },
-      { Icon: BedDouble,label: "Sleep routine",    bestTime: `${fmt(ishaMin + 60)} – ${fmt(ishaMin + 90)}`,      reason: "90 min after Isha, quality sleep" },
+      { Icon: Sparkles, label: "Morning grooming", bestTime: `${f(fajrMin - 20)} – ${f(fajrMin)}`,          reason: "Before Fajr, fresh start" },
+      { Icon: Droplets, label: "Shower / bath",    bestTime: `${f(maghribMin + 20)} – ${f(maghribMin + 50)}`,reason: "After Maghrib, relax" },
+      { Icon: BedDouble,label: "Sleep routine",    bestTime: `${f(ishaMin + 60)} – ${f(ishaMin + 90)}`,      reason: "90 min after Isha, quality sleep" },
     ],
   };
 }
 
 /* ── PRAYER PANEL ─────────────────────────────────── */
 function PrayerPanel() {
-  const [prayers, setPrayers] = useState<PrayerTime[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [city, setCity] = useState("");
-  const [now, setNow] = useState(() => new Date());
-  const fetchRef = useRef<((lat: number, lng: number, label: string) => Promise<void>) | null>(null);
-
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 10_000);
-    return () => clearInterval(t);
-  }, []);
-
-  const fetchByCoords = useCallback(async (lat: number, lng: number, label: string) => {
-    setLoading(true); setError(null); setCity(label);
-    try {
-      const today = toDateStr(new Date());
-      const [day, month, year] = [today.slice(8, 10), today.slice(5, 7), today.slice(0, 4)];
-      const res = await fetch(
-        `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${lat}&longitude=${lng}&method=4`
-      );
-      if (!res.ok) throw new Error("Failed to fetch prayer times");
-      const json = await res.json();
-      const timings = json.data?.timings;
-      if (!timings) throw new Error("Invalid response from prayer API");
-      setPrayers(PRAYER_KEYS.map((key) => ({
-        name: key,
-        arabicName: PRAYER_META[key].arabic,
-        time: timings[key],
-        Icon: PRAYER_META[key].Icon,
-      })));
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  fetchRef.current = fetchByCoords;
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
-            .then((r) => r.json())
-            .then((data) => {
-              const label = data.address?.city || data.address?.town || data.address?.state || "Your location";
-              fetchRef.current?.(latitude, longitude, label);
-            })
-            .catch(() => fetchRef.current?.(latitude, longitude, "Your location"));
-        },
-        () => fetchRef.current?.(21.3891, 39.8579, "Mecca")
-      );
-    } else {
-      fetchRef.current?.(21.3891, 39.8579, "Mecca");
-    }
-  }, []);
-
-  const nowMin = now.getHours() * 60 + now.getMinutes();
-  let nextIdx  = -1;
-  if (prayers.length > 0) {
-    nextIdx = prayers.findIndex((p) => to24hMin(p.time) > nowMin);
-    if (nextIdx === -1) nextIdx = 0;
-  }
+  const { prayers, loading, error, city, nextIdx, nowMin, refresh } = usePrayerTimes();
 
   const nextPrayer   = nextIdx >= 0 ? prayers[nextIdx] : null;
   const diffMin      = nextPrayer ? to24hMin(nextPrayer.time) - nowMin : 0;
@@ -222,10 +120,10 @@ function PrayerPanel() {
               <div className="flex items-center justify-center gap-3">
                 <div className={cn(
                   "size-12 rounded-2xl flex items-center justify-center border",
-                  PRAYER_META[nextPrayer.name].iconColor.replace("text-", "bg-") + "/10",
-                  PRAYER_META[nextPrayer.name].iconColor.replace("text-", "border-") + "/20",
+                  nextPrayer.iconColor.replace("text-", "bg-") + "/10",
+                  nextPrayer.iconColor.replace("text-", "border-") + "/20",
                 )}>
-                  <nextPrayer.Icon className={cn("size-6", PRAYER_META[nextPrayer.name].iconColor)} />
+                  <nextPrayer.Icon className={cn("size-6", nextPrayer.iconColor)} />
                 </div>
                 <div className="text-left">
                   <p className="text-2xl font-bold">{nextPrayer.name}</p>
@@ -253,12 +151,7 @@ function PrayerPanel() {
 
         {!loading && !error && prayers.length > 0 && (
           <button
-            onClick={() => {
-              navigator.geolocation?.getCurrentPosition(
-                (pos) => fetchByCoords(pos.coords.latitude, pos.coords.longitude, city),
-                () => {}
-              );
-            }}
+            onClick={refresh}
             className="text-[11px] text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5 mx-auto px-3 py-1.5 rounded-lg hover:bg-muted/40"
           >
             <RefreshCw className="size-3" /> Refresh location
@@ -270,19 +163,18 @@ function PrayerPanel() {
       {!loading && !error && prayers.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Moon className="size-4 text-primary" />
+            <Clock className="size-4 text-primary" />
             <span className="text-sm font-semibold">Today's Prayer Times</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {prayers.map((prayer, i) => {
-              const isNext = i === nextIdx;
-              const isPast = to24hMin(prayer.time) < nowMin && !isNext;
-              const PIcon  = prayer.Icon;
-              const meta   = PRAYER_META[prayer.name];
+              const isNext  = i === nextIdx;
+              const isPast  = to24hMin(prayer.time) < nowMin && !isNext;
+              const PIcon   = prayer.Icon;
               const iconBg  = isNext
                 ? "bg-primary-foreground/20"
-                : meta.iconColor.replace("text-", "bg-") + "/10";
-              const iconCl  = isNext ? "text-primary-foreground" : meta.iconColor;
+                : prayer.iconColor.replace("text-", "bg-") + "/10";
+              const iconCl  = isNext ? "text-primary-foreground" : prayer.iconColor;
               return (
                 <div
                   key={prayer.name}
@@ -295,17 +187,14 @@ function PrayerPanel() {
                       : "border-border/40 bg-muted/20 hover:bg-muted/40 hover:border-border/60"
                   )}
                 >
-                  {/* Status dot */}
                   {isNext && (
                     <span className="absolute top-2.5 right-2.5 size-1.5 rounded-full bg-primary-foreground/80 animate-pulse" />
                   )}
 
-                  {/* Icon */}
                   <div className={cn("size-10 rounded-xl flex items-center justify-center shrink-0", iconBg)}>
                     <PIcon className={cn("size-5", iconCl)} />
                   </div>
 
-                  {/* Name */}
                   <div className="space-y-0.5">
                     <p className={cn("text-sm font-bold leading-tight", isNext ? "text-primary-foreground" : "text-foreground")}>
                       {prayer.name}
@@ -315,15 +204,13 @@ function PrayerPanel() {
                     </p>
                   </div>
 
-                  {/* Time */}
                   <p className={cn(
                     "text-base font-bold font-mono tabular-nums",
-                    isNext ? "text-primary-foreground" : meta.iconColor
+                    isNext ? "text-primary-foreground" : prayer.iconColor
                   )}>
                     {formatTime12(prayer.time)}
                   </p>
 
-                  {/* Sub-status */}
                   {isNext && (
                     <p className={cn(
                       "text-[10px] font-semibold px-2 py-0.5 rounded-full",
