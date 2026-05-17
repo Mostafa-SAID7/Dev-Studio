@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Search, Plus } from "lucide-react";
 import { useForge } from "@/lib/store";
 import { QACard } from "@/components/interview/qa-card";
