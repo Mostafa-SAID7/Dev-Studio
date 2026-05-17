@@ -53,7 +53,18 @@ router.post("/", async (req: Request, res: Response) => {
   const uid = requireUser(req, res);
   if (!uid) return;
   const { id, ...raw } = req.body;
-  const data = stripDates(raw);
+  const data = stripDates(raw) as Record<string, unknown>;
+
+  // Validate required fields
+  if (!data.title || typeof data.title !== "string" || !data.title.trim()) {
+    res.status(400).json({ error: "title is required" });
+    return;
+  }
+  if (!data.date || typeof data.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(data.date as string)) {
+    res.status(400).json({ error: "date is required (YYYY-MM-DD)" });
+    return;
+  }
+
   const safeId = isUUID(id) ? id : undefined;
   const existing = safeId
     ? await db.select().from(plannerTasks).where(and(eq(plannerTasks.id, safeId), eq(plannerTasks.userId, uid)))

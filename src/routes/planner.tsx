@@ -208,11 +208,15 @@ export default function PlannerPage() {
   useEffect(() => { fetchTasks(); }, [fetchTasks]);
 
   const handleAddTask = async (partial: Omit<PlannerTask, "id" | "createdAt" | "updatedAt">) => {
+    const safeDate = partial.date && /^\d{4}-\d{2}-\d{2}$/.test(partial.date)
+      ? partial.date
+      : selectedDate;
+    const withDate = { ...partial, date: safeDate };
     const tempId = crypto.randomUUID();
-    const optimistic: PlannerTask = { ...partial, id: tempId, createdAt: Date.now(), updatedAt: Date.now() };
+    const optimistic: PlannerTask = { ...withDate, id: tempId, createdAt: Date.now(), updatedAt: Date.now() };
     setTasks((prev) => [...prev, optimistic]);
     try {
-      const saved = await upsertPlannerTask(partial);
+      const saved = await upsertPlannerTask(withDate);
       setTasks((prev) => prev.map((t) => t.id === tempId ? { ...saved, category: normCategory(saved.category) } : t));
     } catch (e: any) {
       setTasks((prev) => prev.filter((t) => t.id !== tempId));
@@ -578,7 +582,7 @@ export default function PlannerPage() {
                 <h3 className="text-sm font-bold">Backlog</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">Tasks without a scheduled date</p>
               </div>
-              <AddTaskForm key="backlog-add" date="" onAdd={handleAddTask} />
+              <AddTaskForm key="backlog-add" date={selectedDate} onAdd={handleAddTask} />
               {backlogTasks.length === 0 ? (
                 <div className="py-16 text-center space-y-2">
                   <Archive className="size-10 text-muted-foreground/20 mx-auto" />
