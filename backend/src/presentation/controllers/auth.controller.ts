@@ -209,10 +209,11 @@ export const getConfig = (_req: Request, res: Response) => {
 
 export const googleCallback = (req: Request, res: Response) => {
   const user = req.user as typeof authUsers.$inferSelect;
-  if (!user) return res.redirect("/auth?error=google_failed");
+  const frontendUrl = process.env.FRONTEND_URL || "";
+  if (!user) return res.redirect(`${frontendUrl}/auth?error=google_failed`);
   const token = signToken(user.id);
   res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
-  res.redirect("/");
+  res.redirect(`${frontendUrl}/`);
 };
 
 // --- Google OAuth Passport Setup ---

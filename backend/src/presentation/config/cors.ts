@@ -5,6 +5,7 @@ const isProd = process.env.NODE_ENV === "production";
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
+  "https://dev-studio77.netlify.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean) as string[];
 

@@ -16,6 +16,10 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
+        url: "https://dev-studio-77.vercel.app",
+        description: "Production Server",
+      },
+      {
         url: "http://localhost:5000",
         description: "Development Server",
       },
