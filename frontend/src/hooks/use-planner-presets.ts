@@ -1,52 +1,18 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getPlannerPresets, type PlannerPresetsResponse } from "../lib/api/planner";
 
-let cachedPresets: PlannerPresetsResponse | null = null;
-let promise: Promise<PlannerPresetsResponse> | null = null;
-
 export function usePlannerPresets() {
-  const [data, setData] = useState<PlannerPresetsResponse | null>(cachedPresets);
-  const [loading, setLoading] = useState(!cachedPresets);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useQuery<PlannerPresetsResponse>({
+    queryKey: ["planner-presets"],
+    queryFn: getPlannerPresets,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    retry: 2,
+  });
 
-  useEffect(() => {
-    if (cachedPresets) {
-      setData(cachedPresets);
-      setLoading(false);
-      return;
-    }
-
-    if (!promise) {
-      promise = getPlannerPresets()
-        .then((res) => {
-          cachedPresets = res;
-          return res;
-        })
-        .catch((err) => {
-          promise = null; // retry on failure
-          throw err;
-        });
-    }
-
-    let isMounted = true;
-    promise
-      .then((res) => {
-        if (isMounted) {
-          setData(res);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (isMounted) {
-          setError(err.message || "Failed to load planner presets");
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  return { data, loading, error };
+  return {
+    data: data ?? null,
+    loading: isLoading,
+    error: error ? (error as Error).message : null,
+  };
 }

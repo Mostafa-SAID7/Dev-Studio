@@ -17,3 +17,13 @@ createRoot(document.getElementById("root")!).render(
     <RouterProvider router={router} />
   </StrictMode>,
 );
+
+// Register service worker for PWA support
+if ("serviceWorker" in navigator && import.meta.env.PROD) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((reg) => console.info("[sw] Registered:", reg.scope))
+      .catch((err) => console.warn("[sw] Registration failed:", err));
+  });
+}

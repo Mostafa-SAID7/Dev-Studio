@@ -2,9 +2,7 @@ import { apiFetch } from "./base";
 
 export async function getProfile() {
   try {
-    const r = await fetch("/api/profile");
-    if (!r.ok) return null;
-    return r.json();
+    return await apiFetch<Record<string, unknown>>("/api/profile");
   } catch {
     return null;
   }

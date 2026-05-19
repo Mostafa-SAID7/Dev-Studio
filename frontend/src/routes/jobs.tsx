@@ -12,6 +12,18 @@ import { OfferEditor } from "@/features/jobs/offer-editor";
 import { ServicesSidebar } from "@/features/jobs/services-sidebar";
 import { ServiceEditor } from "@/features/jobs/service-editor";
 import type { SavedJob, FreelanceOffer, MyService } from "@/features/jobs/types";
+import {
+  getSavedJobs,
+  saveJob,
+  deleteSavedJob,
+  getFreelanceOffers,
+  saveOffer,
+  deleteFreelanceOffer,
+  getMyServices,
+  saveMyService,
+  deleteMyService,
+} from "@/lib/api/jobs";
+import { JOBS_TABS } from "@/constants";
 
 const searchSchema = z.object({ tab: z.enum(["jobs", "offers", "services"]).optional() });
 
@@ -20,62 +32,6 @@ export const Route = createFileRoute("/jobs")({
   validateSearch: searchSchema,
   component: JobsPage,
 });
-
-import { JOBS_TABS } from "@/constants";
-
-function mapJob(x: any): SavedJob {
-  return {
-    id: x.id,
-    title: x.title,
-    company: x.company ?? "",
-    location: x.location ?? "",
-    url: x.url ?? "",
-    platform: x.platform ?? "",
-    status: x.status ?? "saved",
-    salary: x.salary ?? "",
-    remote: x.remote ?? false,
-    tags: x.tags ?? [],
-    notes: x.notes ?? "",
-    createdAt: x.created_at ? new Date(x.created_at).getTime() : Date.now(),
-    updatedAt: x.updated_at ? new Date(x.updated_at).getTime() : Date.now(),
-  };
-}
-function mapOffer(x: any): FreelanceOffer {
-  return {
-    id: x.id,
-    title: x.title,
-    client: x.client ?? "",
-    platform: x.platform ?? "",
-    budget: x.budget ?? "",
-    currency: x.currency ?? "USD",
-    status: x.status ?? "new",
-    description: x.description ?? "",
-    url: x.url ?? "",
-    deadline: x.deadline ?? "",
-    tags: x.tags ?? [],
-    notes: x.notes ?? "",
-    createdAt: x.created_at ? new Date(x.created_at).getTime() : Date.now(),
-    updatedAt: x.updated_at ? new Date(x.updated_at).getTime() : Date.now(),
-  };
-}
-function mapService(x: any): MyService {
-  return {
-    id: x.id,
-    title: x.title,
-    platform: x.platform ?? "",
-    url: x.url ?? "",
-    category: x.category ?? "",
-    price: x.price ?? "",
-    currency: x.currency ?? "USD",
-    status: x.status ?? "active",
-    description: x.description ?? "",
-    deliveryDays: x.delivery_days ?? 3,
-    tags: x.tags ?? [],
-    notes: x.notes ?? "",
-    createdAt: x.created_at ? new Date(x.created_at).getTime() : Date.now(),
-    updatedAt: x.updated_at ? new Date(x.updated_at).getTime() : Date.now(),
-  };
-}
 
 function JobsPage() {
   const { tab = "jobs" } = Route.useSearch();
@@ -93,30 +49,15 @@ function JobsPage() {
   const [newService, setNewService] = useState(false);
 
   const loadJobs = useCallback(async () => {
-    try {
-      const r = await fetch("/api/jobs/saved");
-      if (r.ok) setJobs((await r.json()).map(mapJob));
-    } catch (err) {
-      console.warn("[jobs] Failed to load jobs:", err);
-    }
+    setJobs(await getSavedJobs());
   }, []);
 
   const loadOffers = useCallback(async () => {
-    try {
-      const r = await fetch("/api/jobs/offers");
-      if (r.ok) setOffers((await r.json()).map(mapOffer));
-    } catch (err) {
-      console.warn("[jobs] Failed to load offers:", err);
-    }
+    setOffers(await getFreelanceOffers());
   }, []);
 
   const loadServices = useCallback(async () => {
-    try {
-      const r = await fetch("/api/jobs/services");
-      if (r.ok) setServices((await r.json()).map(mapService));
-    } catch (err) {
-      console.warn("[jobs] Failed to load services:", err);
-    }
+    setServices(await getMyServices());
   }, []);
 
   useEffect(() => {
@@ -135,90 +76,87 @@ function JobsPage() {
   }, [tab]);
 
   const handleSaveJob = async (data: Partial<SavedJob>) => {
-    const body = activeJobId ? { ...data, id: activeJobId } : data;
-    const r = await fetch("/api/jobs/saved", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (!r.ok) {
+    try {
+      const body = activeJobId ? { ...data, id: activeJobId } : data;
+      const saved = await saveJob(body);
+      setJobs((prev) => {
+        const idx = prev.findIndex((j) => j.id === saved.id);
+        return idx >= 0 ? prev.map((j) => (j.id === saved.id ? saved : j)) : [...prev, saved];
+      });
+      setActiveJobId(saved.id);
+      setNewJob(false);
+      toast.success("Job saved!");
+    } catch {
       toast.error("Failed to save.");
-      return;
     }
-    const saved = mapJob(await r.json());
-    setJobs((prev) => {
-      const idx = prev.findIndex((j) => j.id === saved.id);
-      return idx >= 0 ? prev.map((j) => (j.id === saved.id ? saved : j)) : [...prev, saved];
-    });
-    setActiveJobId(saved.id);
-    setNewJob(false);
-    toast.success("Job saved!");
   };
 
   const handleDeleteJob = async (id: string) => {
-    await fetch(`/api/jobs/saved/${id}`, { method: "DELETE" });
-    setJobs((prev) => prev.filter((j) => j.id !== id));
-    setActiveJobId(null);
-    setNewJob(false);
-    toast.success("Job removed.");
+    try {
+      await deleteSavedJob(id);
+      setJobs((prev) => prev.filter((j) => j.id !== id));
+      setActiveJobId(null);
+      setNewJob(false);
+      toast.success("Job removed.");
+    } catch {
+      toast.error("Failed to delete job.");
+    }
   };
 
   const handleSaveOffer = async (data: Partial<FreelanceOffer>) => {
-    const body = activeOfferId ? { ...data, id: activeOfferId } : data;
-    const r = await fetch("/api/jobs/offers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (!r.ok) {
+    try {
+      const body = activeOfferId ? { ...data, id: activeOfferId } : data;
+      const saved = await saveOffer(body);
+      setOffers((prev) => {
+        const idx = prev.findIndex((o) => o.id === saved.id);
+        return idx >= 0 ? prev.map((o) => (o.id === saved.id ? saved : o)) : [...prev, saved];
+      });
+      setActiveOfferId(saved.id);
+      setNewOffer(false);
+      toast.success("Offer saved!");
+    } catch {
       toast.error("Failed to save.");
-      return;
     }
-    const saved = mapOffer(await r.json());
-    setOffers((prev) => {
-      const idx = prev.findIndex((o) => o.id === saved.id);
-      return idx >= 0 ? prev.map((o) => (o.id === saved.id ? saved : o)) : [...prev, saved];
-    });
-    setActiveOfferId(saved.id);
-    setNewOffer(false);
-    toast.success("Offer saved!");
   };
 
   const handleDeleteOffer = async (id: string) => {
-    await fetch(`/api/jobs/offers/${id}`, { method: "DELETE" });
-    setOffers((prev) => prev.filter((o) => o.id !== id));
-    setActiveOfferId(null);
-    setNewOffer(false);
-    toast.success("Offer removed.");
+    try {
+      await deleteFreelanceOffer(id);
+      setOffers((prev) => prev.filter((o) => o.id !== id));
+      setActiveOfferId(null);
+      setNewOffer(false);
+      toast.success("Offer removed.");
+    } catch {
+      toast.error("Failed to delete offer.");
+    }
   };
 
   const handleSaveService = async (data: Partial<MyService>) => {
-    const body = activeServiceId ? { ...data, id: activeServiceId } : data;
-    const r = await fetch("/api/jobs/services", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (!r.ok) {
+    try {
+      const body = activeServiceId ? { ...data, id: activeServiceId } : data;
+      const saved = await saveMyService(body);
+      setServices((prev) => {
+        const idx = prev.findIndex((s) => s.id === saved.id);
+        return idx >= 0 ? prev.map((s) => (s.id === saved.id ? saved : s)) : [...prev, saved];
+      });
+      setActiveServiceId(saved.id);
+      setNewService(false);
+      toast.success("Service saved!");
+    } catch {
       toast.error("Failed to save.");
-      return;
     }
-    const saved = mapService(await r.json());
-    setServices((prev) => {
-      const idx = prev.findIndex((s) => s.id === saved.id);
-      return idx >= 0 ? prev.map((s) => (s.id === saved.id ? saved : s)) : [...prev, saved];
-    });
-    setActiveServiceId(saved.id);
-    setNewService(false);
-    toast.success("Service saved!");
   };
 
   const handleDeleteService = async (id: string) => {
-    await fetch(`/api/jobs/services/${id}`, { method: "DELETE" });
-    setServices((prev) => prev.filter((s) => s.id !== id));
-    setActiveServiceId(null);
-    setNewService(false);
-    toast.success("Service removed.");
+    try {
+      await deleteMyService(id);
+      setServices((prev) => prev.filter((s) => s.id !== id));
+      setActiveServiceId(null);
+      setNewService(false);
+      toast.success("Service removed.");
+    } catch {
+      toast.error("Failed to delete service.");
+    }
   };
 
   const activeJob = jobs.find((j) => j.id === activeJobId) ?? null;

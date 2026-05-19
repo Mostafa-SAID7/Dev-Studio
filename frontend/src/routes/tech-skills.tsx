@@ -1,13 +1,17 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { SkillTabs } from "@/features/tech-skills/skill-tabs";
 import { SkillArea } from "@/features/tech-skills/skill-area";
-import { MaterialsView } from "@/features/tech-skills/materials-view";
 import { MockChatView } from "@/features/ai-mock/mock-chat-view";
 import { PageHeader, PageContainer, PageSection } from "@/components/layout";
 import { TECH_AREAS } from "@/data/tech";
 import type { TechAreaId } from "@/types/skills";
 import { Code2 } from "lucide-react";
 import { z } from "zod";
+
+const MaterialsView = lazy(() =>
+  import("@/features/tech-skills/materials-view").then((m) => ({ default: m.MaterialsView }))
+);
 
 const searchSchema = z.object({
   tab: z
@@ -31,8 +35,6 @@ export const Route = createFileRoute("/tech-skills")({
   component: TechSkillsPage,
 });
 
-const NON_AREA_TABS = new Set(["materials", "ai-mock"]);
-
 function TechSkillsPage() {
   const { tab } = useSearch({ from: "/tech-skills" });
 
@@ -45,7 +47,15 @@ function TechSkillsPage() {
 
       <div className="flex-1 min-h-0 overflow-hidden">
         {tab === "materials" ? (
-          <MaterialsView />
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+                Loading resources…
+              </div>
+            }
+          >
+            <MaterialsView />
+          </Suspense>
         ) : tab === "ai-mock" ? (
           <MockChatView context="tech" />
         ) : (

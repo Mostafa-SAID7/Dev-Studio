@@ -6,6 +6,7 @@ import { User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useForge } from "@/lib/store";
+import { updateProfile } from "@/lib/api/profile";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({ meta: [{ title: "Profile — Dev Studio" }] }),
@@ -35,12 +36,11 @@ function ProfilePage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await fetch("/api/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      await updateProfile({
+        displayName: form.displayName || null,
+        avatarUrl: form.avatarUrl || null,
+        location: form.location || null,
       });
-      if (!res.ok) throw new Error("Failed to save");
       await refreshProfile();
       toast.success("Profile saved!");
     } catch {
