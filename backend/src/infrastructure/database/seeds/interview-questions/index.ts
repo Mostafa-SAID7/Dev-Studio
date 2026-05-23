@@ -12,6 +12,7 @@ import { devopsQuestions } from "./devops.js";
 import { frontendCoreQuestions } from "./frontend-core.js";
 import { testingQuestions } from "./testing.js";
 import { generalQuestions } from "./general.js";
+import { databaseQuestions } from "./database.js";
 
 export const seedInterviewQuestions = [
   ...angularQuestions,
@@ -26,4 +27,5 @@ export const seedInterviewQuestions = [
   ...devopsQuestions,
   ...testingQuestions,
   ...generalQuestions,
+  ...databaseQuestions,
 ];
