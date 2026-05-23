@@ -160,6 +160,11 @@ export function OffersSidebar({ offers, activeId, onSelect, onAdd }: Props) {
                       {offer.budget} {offer.currency}
                     </span>
                   )}
+                  {offer.category && (
+                    <span className="text-[9px] text-muted-foreground/70 truncate">
+                      {offer.category}
+                    </span>
+                  )}
                   {offer.deadline && (
                     <span className="text-[9px] text-muted-foreground/60">
                       Due {offer.deadline}
