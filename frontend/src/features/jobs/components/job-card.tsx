@@ -1,18 +1,6 @@
 import { Bookmark, ExternalLink, Loader2 } from "lucide-react";
 import { SOURCE_BADGE } from "@/data/jobs/jobs";
-
-export interface ScrapedJob {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  url: string;
-  source: string;
-  postedAt: string;
-  tags?: string[];
-  salary?: string;
-  logo?: string;
-}
+import type { ScrapedJob } from "@/types/jobs";
 
 export const FREELANCE_SOURCES = new Set(["mostaql", "khamsat"]);
 

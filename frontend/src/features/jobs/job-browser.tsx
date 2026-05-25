@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Search, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import type { SavedJob } from "./types";
+import type { SavedJob } from "@/types/jobs";
+import type { ScrapedJob } from "@/types/jobs";
 import { SOURCE_PLATFORM_NAME } from "@/data/jobs/jobs";
-import { JobCard, type ScrapedJob, FREELANCE_SOURCES } from "./components/job-card";
+import { JobCard, FREELANCE_SOURCES } from "./components/job-card";
 import { BrowserControls } from "./components/browser-controls";
 import { CATEGORIES } from "@/data/jobs/jobs";
 

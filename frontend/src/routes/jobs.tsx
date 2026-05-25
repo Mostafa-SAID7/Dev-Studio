@@ -10,7 +10,7 @@ import { OffersSidebar } from "@/features/jobs/offers-sidebar";
 import { OfferEditor } from "@/features/jobs/offer-editor";
 import { ServicesSidebar } from "@/features/jobs/services-sidebar";
 import { ServiceEditor } from "@/features/jobs/service-editor";
-import type { SavedJob, FreelanceOffer, MyService } from "@/features/jobs/types";
+import type { SavedJob, FreelanceOffer, MyService } from "@/types/jobs";
 import {
   getSavedJobs,
   saveJob,
